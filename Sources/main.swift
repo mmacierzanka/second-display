@@ -89,6 +89,21 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func setVideo(_ d: AVCaptureDevice?) {
         swap(&videoInput, to: d)
         defaults.set(d?.uniqueID, forKey: "video")
+        if let d = d { applyFormat(d) }
+    }
+
+    // MARK: formats
+    func dims(_ f: AVCaptureDevice.Format) -> CMVideoDimensions { CMVideoFormatDescriptionGetDimensions(f.formatDescription) }
+    func fps(_ f: AVCaptureDevice.Format) -> Int { Int((f.videoSupportedFrameRateRanges.map(\.maxFrameRate).max() ?? 0).rounded()) }
+    func label(_ f: AVCaptureDevice.Format) -> String { "\(dims(f).width)x\(dims(f).height) @ \(fps(f)) fps" }
+
+    func applyFormat(_ d: AVCaptureDevice) {
+        guard let l = defaults.string(forKey: "format.\(d.uniqueID)"),
+              let f = d.formats.first(where: { label($0) == l }), (try? d.lockForConfiguration()) != nil else { return }
+        d.activeFormat = f
+        d.activeVideoMinFrameDuration = CMTime(value: 1, timescale: CMTimeScale(fps(f)))
+        d.activeVideoMaxFrameDuration = d.activeVideoMinFrameDuration
+        d.unlockForConfiguration()
     }
     func setAudio(_ d: AVCaptureDevice?) {
         swap(&audioInput, to: d)
@@ -120,6 +135,16 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 menu.addItem(it)
             }
             if menu.items.isEmpty { menu.addItem(header(NSLocalizedString("No devices", comment: ""))) }
+            if let d = videoInput?.device {
+                menu.addItem(.separator())
+                menu.addItem(header(NSLocalizedString("Format", comment: "")))
+                var seen = Set<String>()
+                for f in d.formats.sorted(by: { (dims($0).width, fps($0)) > (dims($1).width, fps($1)) }) where seen.insert(label(f)).inserted {
+                    let it = NSMenuItem(title: label(f), action: #selector(pickFormat(_:)), keyEquivalent: "")
+                    it.target = self; it.state = f == d.activeFormat ? .on : .off
+                    menu.addItem(it)
+                }
+            }
         } else if menu === audioMenu {
             menu.removeAllItems()
             let off = NSMenuItem(title: NSLocalizedString("Off", comment: ""), action: #selector(pickAudio(_:)), keyEquivalent: "")
@@ -146,6 +171,10 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc func pickAudio(_ s: NSMenuItem) { setAudio(s.representedObject as? AVCaptureDevice) }
     var startFull: Bool { defaults.object(forKey: "startFull") as? Bool ?? true }
     @objc func toggleFull() { defaults.set(!startFull, forKey: "startFull") }
+    @objc func pickFormat(_ s: NSMenuItem) {
+        guard let d = videoInput?.device else { return }
+        defaults.set(s.title, forKey: "format.\(d.uniqueID)"); applyFormat(d)
+    }
     @objc func toggleAwake() { setKeepAwake(!keepAwake) }
 }
 
