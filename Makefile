@@ -5,12 +5,18 @@ RES      := $(shell find Resources -type f)
 SIGN_ID  ?= -
 BUILDNUM := $(shell git rev-list --count HEAD 2>/dev/null || echo 1)
 
-.PHONY: build run clean install uninstall check help
+VERSION  := $(shell /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" Config/Info.plist)
+DMG      := build/SecondDisplay-$(VERSION).dmg
+
+.PHONY: build run clean install uninstall check dmg help
 build: $(APP) ## Build build/SecondDisplay.app
 
 $(APP): Makefile $(SRC) $(RES) Config/Info.plist Config/SecondDisplay.entitlements
 	rm -rf $(APP) && mkdir -p $(APP)/Contents/MacOS $(APP)/Contents/Resources
-	swiftc -O $(SRC) -o $(APP)/Contents/MacOS/SecondDisplay
+	swiftc -O -target arm64-apple-macos26.0 $(SRC) -o $(APP)/Contents/MacOS/SecondDisplay-arm64
+	swiftc -O -target x86_64-apple-macos26.0 $(SRC) -o $(APP)/Contents/MacOS/SecondDisplay-x86_64
+	lipo -create $(APP)/Contents/MacOS/SecondDisplay-* -output $(APP)/Contents/MacOS/SecondDisplay
+	rm $(APP)/Contents/MacOS/SecondDisplay-*
 	cp Config/Info.plist $(APP)/Contents/Info.plist
 	/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $(BUILDNUM)" $(APP)/Contents/Info.plist
 	cp -R Resources/en.lproj Resources/pl.lproj Resources/uninstall.sh $(APP)/Contents/Resources/
@@ -35,6 +41,15 @@ check: build ## Lint sources, plists, strings and the built bundle
 	plutil -lint Config/Info.plist Config/SecondDisplay.entitlements Resources/*.lproj/*.strings
 	scripts/check-strings.sh
 	codesign --verify --strict $(APP)
+
+dmg: build ## Build a distributable disk image (not notarized)
+	rm -rf build/dmg $(DMG) && mkdir build/dmg
+	cp -R $(APP) build/dmg/
+	ln -s /Applications build/dmg/Applications
+	cp "Config/dmg/Read Me First.txt" build/dmg/
+	hdiutil create -volname "Second Display" -srcfolder build/dmg -ov -format UDZO $(DMG)
+	hdiutil verify $(DMG)
+	rm -rf build/dmg
 
 help: ## List targets
 	@grep -E '^[a-z]+:.*##' Makefile | sed 's/:.*##/ -/'

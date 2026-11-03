@@ -11,6 +11,7 @@ make          # builds build/SecondDisplay.app
 make run      # build and launch
 make check    # lint: typecheck, plists, translations, signature
 make install  # copy to ~/Applications
+make dmg      # build/SecondDisplay-<version>.dmg (universal, not notarized)
 make help     # list targets
 ```
 The app is signed ad-hoc (works on this Mac). For distribution: `make SIGN_ID="Developer ID Application: ..."` (notarization is still required).
@@ -25,14 +26,17 @@ open ~/Applications/SecondDisplay.app
 ```
 On first launch macOS asks for camera and microphone access — allow both. You can change this later in System Settings → Privacy & Security.
 
-If you received a prebuilt copy that is not notarized, macOS blocks it. Allow it once in System Settings → Privacy & Security → "Open Anyway", or run `xattr -dr com.apple.quarantine SecondDisplay.app`.
+If you received a prebuilt copy (the `.dmg`), drag the app to Applications. It is not notarized, so macOS blocks it on first launch: allow it once in System Settings → Privacy & Security → "Open Anyway", or run `xattr -dr com.apple.quarantine /Applications/SecondDisplay.app`. The same steps are in `Read Me First.txt` inside the disk image.
+
+## Releasing a DMG
+`make dmg` builds a universal (arm64 + x86_64) app and packs it with an `Applications` shortcut and `Read Me First.txt` (source: `Config/dmg/`). The disk image is not signed with a Developer ID or notarized; the instructions in it explain how recipients allow it. Bump the version in `Config/Info.plist` before releasing and tag it (`git tag -a vX.Y.Z -m vX.Y.Z`).
 
 ## Usage
 Menus at the top of the screen: **Video** (device, format), **Audio** (source or off), **Options** (prevent display sleep, start in full screen, always on top, mute ⇧⌘M, scaling), **Window** (tiling, full screen ⌃⌘F).
 
 ## Layout
 - `Sources/` – the app (AppKit + AVFoundation): `App` (state, window), `Capture` (devices, formats), `Menu`, `Power`, `Preferences`, `main` (entry point)
-- `Config/` – `Info.plist`, entitlements (camera, microphone)
+- `Config/` – `Info.plist`, entitlements (camera, microphone), `dmg/` (instructions shipped in the disk image)
 - `Resources/` – icon (`AppIcon.icon`, Icon Composer), en/pl translations, `uninstall.sh`
 - `scripts/check-strings.sh` – translation consistency
 

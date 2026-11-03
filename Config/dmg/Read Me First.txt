@@ -1,0 +1,32 @@
+SECOND DISPLAY — INSTALLATION
+=============================
+
+1. Drag "SecondDisplay" onto the "Applications" folder in this window.
+
+2. Open Second Display from Applications.
+   macOS will most likely refuse: this app is not notarized by Apple
+   (the author does not pay for a developer account). The app is safe to
+   run if you trust where you got it — the source code is open.
+
+3. Allow it once (pick ONE way):
+
+   A) System Settings
+      - Open System Settings > Privacy & Security.
+      - Scroll to the Security section; you will see
+        "SecondDisplay was blocked...". Click "Open Anyway".
+      - Confirm with your password / Touch ID, then click "Open".
+
+   B) Terminal
+      xattr -dr com.apple.quarantine /Applications/SecondDisplay.app
+
+   You only need to do this once per downloaded copy.
+
+4. On first launch, allow Camera and Microphone access.
+   (Change later in System Settings > Privacy & Security.)
+
+REQUIREMENTS
+  macOS 26 or newer.
+
+UNINSTALL
+  Run this in Terminal to remove the app and every trace it leaves:
+    /Applications/SecondDisplay.app/Contents/Resources/uninstall.sh
