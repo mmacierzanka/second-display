@@ -1,0 +1,22 @@
+# Second Display – brief
+
+## Cel
+Aplikacja natywna na macOS, która wyświetla w oknie obraz z urządzenia przechwytującego (kamerki / capture card) oraz odtwarza dźwięk z wybranego źródła (wejścia) dźwięku. Ma służyć jako "drugi monitor".
+
+## Wymagania
+- Menu (główne menu aplikacji u góry ekranu, nie ikona statusowa po prawej): wybór źródła obrazu, wybór źródła dźwięku oraz opcja wyłączenia dźwięku.
+- Opcjonalna (włączana/wyłączana) blokada usypiania ekranu w trakcie aktywności aplikacji. Domyślnie włączona, wybór zapamiętywany.
+- Opcjonalne uruchamianie na pełnym ekranie. Domyślnie włączone, wybór zapamiętywany.
+- Lokalizacja: angielski i polski (`Resources/{en,pl}.lproj`), język wg ustawień systemu.
+- Dodatki: wybór formatu (rozdzielczość/FPS) per urządzenie, tryby skalowania (dopasuj/wypełnij/rozciągnij), okno zawsze na wierzchu, wyciszenie (⌘M), pełny ekran (⌘F), automatyczne wznawianie po odpięciu/wpięciu urządzenia.
+- Poza zakresem (na razie): start przy logowaniu, nagrywanie, zrzuty ekranu, suwak głośności.
+
+## Struktura
+- `Sources/main.swift` – cała aplikacja (AppKit + AVFoundation, jedna sesja `AVCaptureSession`, dźwięk przez `AVCaptureAudioPreviewOutput`).
+- `Resources/{en,pl}.lproj` – `Localizable.strings` i `InfoPlist.strings`.
+- `build.sh` – buduje i podpisuje (ad-hoc) `SecondDisplay.app`; uruchom `./build.sh`, potem `open SecondDisplay.app`.
+
+## Konwencje
+- Ustawienia w `UserDefaults` (klucze: `video`, `audio`, `keepAwake`, `startFull`, `onTop`, `gravity`, `format.<id>`).
+- Nowe napisy dodawaj przez `NSLocalizedString` oraz do obu plików `Localizable.strings`.
+- Commity: małe, osobne na funkcję, z linią `Co-Authored-By`.
