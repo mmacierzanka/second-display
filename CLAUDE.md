@@ -8,7 +8,7 @@ Aplikacja natywna na macOS, która wyświetla w oknie obraz z urządzenia przech
 - Opcjonalna (włączana/wyłączana) blokada usypiania ekranu w trakcie aktywności aplikacji. Domyślnie włączona, wybór zapamiętywany.
 - Opcjonalne uruchamianie na pełnym ekranie. Domyślnie włączone, wybór zapamiętywany.
 - Lokalizacja: angielski i polski (`Resources/{en,pl}.lproj`), język wg ustawień systemu.
-- Dodatki: wybór formatu (rozdzielczość/FPS) per urządzenie, tryby skalowania (dopasuj/wypełnij/rozciągnij), okno zawsze na wierzchu, wyciszenie (⌘M), pełny ekran (⌘F), automatyczne wznawianie po odpięciu/wpięciu urządzenia.
+- Dodatki: wybór formatu (rozdzielczość/FPS) per urządzenie, tryby skalowania (dopasuj/wypełnij/rozciągnij), okno zawsze na wierzchu, wyciszenie (⇧⌘M), menu Okno (kafelkowanie systemowe, pełny ekran ⌃⌘F), automatyczne wznawianie po odpięciu/wpięciu urządzenia.
 - Poza zakresem (na razie): start przy logowaniu, nagrywanie, zrzuty ekranu, suwak głośności.
 
 ## Struktura

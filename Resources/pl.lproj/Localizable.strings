@@ -9,8 +9,12 @@
 "Format" = "Format";
 "Always on top" = "Zawsze na wierzchu";
 "Mute" = "Wycisz";
-"Toggle full screen" = "Pełny ekran";
 "Scaling" = "Skalowanie";
 "Fit" = "Dopasuj";
 "Fill" = "Wypełnij";
 "Stretch" = "Rozciągnij";
+"Window" = "Okno";
+"Minimize" = "Zwiń";
+"Zoom" = "Powiększ";
+"Enter Full Screen" = "Wejdź w tryb pełnoekranowy";
+"Bring All to Front" = "Przenieś wszystko na wierzch";

@@ -8,7 +8,7 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var videoInput: AVCaptureDeviceInput?
     var audioInput: AVCaptureDeviceInput?
     var window: NSWindow!
-    let videoMenu = NSMenu(), audioMenu = NSMenu(), optionsMenu = NSMenu()
+    let videoMenu = NSMenu(), audioMenu = NSMenu(), optionsMenu = NSMenu(), windowMenu = NSMenu()
     var sleepAssertion: IOPMAssertionID = 0
     var keepAwake = false
     var layer: AVCaptureVideoPreviewLayer!
@@ -35,11 +35,20 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let main = NSMenu()
         let appMenu = NSMenu()
         appMenu.addItem(NSMenuItem(title: NSLocalizedString("Quit Second Display", comment: ""), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
-        for (title, sub) in [("", appMenu), (NSLocalizedString("Video", comment: ""), videoMenu), (NSLocalizedString("Audio", comment: ""), audioMenu), (NSLocalizedString("Options", comment: ""), optionsMenu)] {
+        for (title, sub) in [("", appMenu), (NSLocalizedString("Video", comment: ""), videoMenu), (NSLocalizedString("Audio", comment: ""), audioMenu), (NSLocalizedString("Options", comment: ""), optionsMenu), (NSLocalizedString("Window", comment: ""), windowMenu)] {
             let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
             sub.title = title; sub.delegate = self; item.submenu = sub
             main.addItem(item)
         }
+        func L(_ k: String) -> String { NSLocalizedString(k, comment: "") }
+        windowMenu.addItem(NSMenuItem(title: L("Minimize"), action: #selector(NSWindow.performMiniaturize(_:)), keyEquivalent: "m"))
+        windowMenu.addItem(NSMenuItem(title: L("Zoom"), action: #selector(NSWindow.performZoom(_:)), keyEquivalent: ""))
+        let fs = NSMenuItem(title: L("Enter Full Screen"), action: #selector(NSWindow.toggleFullScreen(_:)), keyEquivalent: "f")
+        fs.keyEquivalentModifierMask = [.command, .control]
+        windowMenu.addItem(fs)
+        windowMenu.addItem(.separator())
+        windowMenu.addItem(NSMenuItem(title: L("Bring All to Front"), action: #selector(NSApplication.arrangeInFront(_:)), keyEquivalent: ""))
+        NSApp.windowsMenu = windowMenu  // AppKit adds the system tiling ("Move & Resize") items
         NSApp.mainMenu = main
 
         keepAwake = defaults.object(forKey: "keepAwake") as? Bool ?? true
@@ -178,11 +187,9 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
             f.target = self; f.state = startFull ? .on : .off
             let t = NSMenuItem(title: NSLocalizedString("Always on top", comment: ""), action: #selector(toggleTop), keyEquivalent: "")
             t.target = self; t.state = onTop ? .on : .off
-            let m = NSMenuItem(title: NSLocalizedString("Mute", comment: ""), action: #selector(toggleMute), keyEquivalent: "m")
+            let m = NSMenuItem(title: NSLocalizedString("Mute", comment: ""), action: #selector(toggleMute), keyEquivalent: "M")
             m.target = self; m.state = muted ? .on : .off
-            let fs = NSMenuItem(title: NSLocalizedString("Toggle full screen", comment: ""), action: #selector(fullScreen), keyEquivalent: "f")
-            fs.target = self
-            menu.addItem(k); menu.addItem(f); menu.addItem(t); menu.addItem(m); menu.addItem(fs)
+            menu.addItem(k); menu.addItem(f); menu.addItem(t); menu.addItem(m)
             menu.addItem(.separator())
             menu.addItem(header(NSLocalizedString("Scaling", comment: "")))
             for (key, name) in [("fit", "Fit"), ("fill", "Fill"), ("stretch", "Stretch")] {
@@ -207,7 +214,6 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     @objc func toggleTop() { defaults.set(!onTop, forKey: "onTop"); window.level = onTop ? .floating : .normal }
     @objc func toggleMute() { muted.toggle(); preview.volume = muted ? 0 : 1 }
-    @objc func fullScreen() { window.toggleFullScreen(nil) }
     @objc func pickGravity(_ s: NSMenuItem) { defaults.set(s.representedObject as? String, forKey: "gravity"); layer.videoGravity = gravity }
     @objc func toggleAwake() { setKeepAwake(!keepAwake) }
 }

@@ -9,8 +9,12 @@
 "Format" = "Format";
 "Always on top" = "Always on top";
 "Mute" = "Mute";
-"Toggle full screen" = "Toggle full screen";
 "Scaling" = "Scaling";
 "Fit" = "Fit";
 "Fill" = "Fill";
 "Stretch" = "Stretch";
+"Window" = "Window";
+"Minimize" = "Minimize";
+"Zoom" = "Zoom";
+"Enter Full Screen" = "Enter Full Screen";
+"Bring All to Front" = "Bring All to Front";
