@@ -22,6 +22,7 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
         window.contentView!.wantsLayer = true
         layer = AVCaptureVideoPreviewLayer(session: session)
         layer.videoGravity = gravity
+        window.level = onTop ? .floating : .normal
         layer.frame = window.contentView!.bounds
         layer.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
         window.contentView!.layer!.addSublayer(layer)
@@ -164,7 +165,9 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
             k.target = self; k.state = keepAwake ? .on : .off
             let f = NSMenuItem(title: NSLocalizedString("Start in full screen", comment: ""), action: #selector(toggleFull), keyEquivalent: "")
             f.target = self; f.state = startFull ? .on : .off
-            menu.addItem(k); menu.addItem(f)
+            let t = NSMenuItem(title: NSLocalizedString("Always on top", comment: ""), action: #selector(toggleTop), keyEquivalent: "")
+            t.target = self; t.state = onTop ? .on : .off
+            menu.addItem(k); menu.addItem(f); menu.addItem(t)
             menu.addItem(.separator())
             menu.addItem(header(NSLocalizedString("Scaling", comment: "")))
             for (key, name) in [("fit", "Fit"), ("fill", "Fill"), ("stretch", "Stretch")] {
@@ -179,6 +182,7 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc func pickAudio(_ s: NSMenuItem) { setAudio(s.representedObject as? AVCaptureDevice) }
     var startFull: Bool { defaults.object(forKey: "startFull") as? Bool ?? true }
     @objc func toggleFull() { defaults.set(!startFull, forKey: "startFull") }
+    var onTop: Bool { defaults.bool(forKey: "onTop") }
     var gravity: AVLayerVideoGravity {
         switch defaults.string(forKey: "gravity") { case "fill": return .resizeAspectFill; case "stretch": return .resize; default: return .resizeAspect }
     }
@@ -186,6 +190,7 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
         guard let d = videoInput?.device else { return }
         defaults.set(s.title, forKey: "format.\(d.uniqueID)"); applyFormat(d)
     }
+    @objc func toggleTop() { defaults.set(!onTop, forKey: "onTop"); window.level = onTop ? .floating : .normal }
     @objc func pickGravity(_ s: NSMenuItem) { defaults.set(s.representedObject as? String, forKey: "gravity"); layer.videoGravity = gravity }
     @objc func toggleAwake() { setKeepAwake(!keepAwake) }
 }
