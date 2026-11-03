@@ -13,12 +13,13 @@ Aplikacja natywna na macOS, która wyświetla w oknie obraz z urządzenia przech
 
 ## Struktura
 - `Sources/main.swift` – cała aplikacja (AppKit + AVFoundation, jedna sesja `AVCaptureSession`, dźwięk przez `AVCaptureAudioPreviewOutput`).
-- `Resources/{en,pl}.lproj` – `Localizable.strings` i `InfoPlist.strings`.
-- `Resources/AppIcon.icon` – ikona w formacie Icon Composer (Liquid Glass; otwórz w Icon Composer, warstwy SVG w `Assets/`); `build.sh` kompiluje ją przez `actool`.
-- `Resources/uninstall.sh` – kopiowany do bundla (`Contents/Resources/uninstall.sh`); usuwa aplikację, preferencje, cache, uprawnienia TCC. Bundle ID: `com.mmacierzanka.seconddisplay`.
-- `build.sh` – buduje i podpisuje (ad-hoc) `SecondDisplay.app`; uruchom `./build.sh`, potem `open SecondDisplay.app`.
+- `Config/Info.plist`, `Config/SecondDisplay.entitlements` – wersja, uprawnienia (kamera, mikrofon; hardened runtime).
+- `Resources/` – `AppIcon.icon` (Icon Composer, Liquid Glass; kompilowana przez `actool`), `{en,pl}.lproj` (`Localizable.strings`, `InfoPlist.strings`), `uninstall.sh` (kopiowany do bundla; usuwa aplikację, preferencje, cache, uprawnienia TCC). Bundle ID: `com.mmacierzanka.seconddisplay`.
+- `scripts/check-strings.sh` – spójność tłumaczeń en/pl.
+- `Makefile` – `make` (build do `build/SecondDisplay.app`), `run`, `check`, `install`, `uninstall`, `clean`, `help`. `SIGN_ID` domyślnie ad-hoc (`-`).
 
 ## Konwencje
 - Ustawienia w `UserDefaults` (klucze: `video`, `audio`, `keepAwake`, `startFull`, `onTop`, `gravity`, `format.<id>`).
 - Nowe napisy dodawaj przez `NSLocalizedString` oraz do obu plików `Localizable.strings`.
+- Przed commitem: `make check`. Wersja w `Config/Info.plist`, numer buildu = liczba commitów.
 - Commity: małe, osobne na funkcję, z linią `Co-Authored-By`.
