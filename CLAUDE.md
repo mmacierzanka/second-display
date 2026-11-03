@@ -15,6 +15,7 @@ Aplikacja natywna na macOS, która wyświetla w oknie obraz z urządzenia przech
 - `Sources/main.swift` – cała aplikacja (AppKit + AVFoundation, jedna sesja `AVCaptureSession`, dźwięk przez `AVCaptureAudioPreviewOutput`).
 - `Resources/{en,pl}.lproj` – `Localizable.strings` i `InfoPlist.strings`.
 - `Resources/AppIcon.icon` – ikona w formacie Icon Composer (Liquid Glass; otwórz w Icon Composer, warstwy SVG w `Assets/`); `build.sh` kompiluje ją przez `actool`.
+- `Resources/uninstall.sh` – kopiowany do bundla (`Contents/Resources/uninstall.sh`); usuwa aplikację, preferencje, cache, uprawnienia TCC. Bundle ID: `com.mmacierzanka.seconddisplay`.
 - `build.sh` – buduje i podpisuje (ad-hoc) `SecondDisplay.app`; uruchom `./build.sh`, potem `open SecondDisplay.app`.
 
 ## Konwencje

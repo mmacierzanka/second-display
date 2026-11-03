@@ -11,7 +11,7 @@ cat > "$A/Contents/Info.plist" <<P
 <key>CFBundleDevelopmentRegion</key><string>en</string>
 <key>CFBundleLocalizations</key><array><string>en</string><string>pl</string></array>
 <key>CFBundleExecutable</key><string>SecondDisplay</string>
-<key>CFBundleIdentifier</key><string>local.seconddisplay</string>
+<key>CFBundleIdentifier</key><string>com.mmacierzanka.seconddisplay</string>
 <key>CFBundleIconFile</key><string>AppIcon</string>
 <key>CFBundleIconName</key><string>AppIcon</string>
 <key>CFBundleName</key><string>Second Display</string>
@@ -23,4 +23,5 @@ cat > "$A/Contents/Info.plist" <<P
 P
 for L in en pl; do mkdir -p "$A/Contents/Resources/$L.lproj"; cp Resources/$L.lproj/*.strings "$A/Contents/Resources/$L.lproj/"; done
 xcrun actool Resources/AppIcon.icon --compile "$A/Contents/Resources" --platform macosx --minimum-deployment-target 26.0 --app-icon AppIcon --output-partial-info-plist /dev/null >/dev/null
+cp Resources/uninstall.sh "$A/Contents/Resources/"
 codesign --force --sign - "$A"
