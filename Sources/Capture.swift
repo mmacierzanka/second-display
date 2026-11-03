@@ -12,6 +12,17 @@ extension App {
         }
     }
 
+    func quitNoDevices() {
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = NSLocalizedString("No capture devices found", comment: "")
+        alert.informativeText = NSLocalizedString("Connect a camera or capture card and launch Second Display again.", comment: "")
+        alert.addButton(withTitle: "OK")
+        NSApp.activate()
+        alert.runModal()
+        NSApp.terminate(nil)
+    }
+
     // MARK: devices
     func videoDevices() -> [AVCaptureDevice] {
         AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .external, .continuityCamera],

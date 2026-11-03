@@ -16,6 +16,7 @@ final class App: NSObject, NSApplicationDelegate {
     let defaults = UserDefaults.standard
 
     func applicationDidFinishLaunching(_ n: Notification) {
+        guard !videoDevices().isEmpty else { return quitNoDevices() }
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 960, height: 540),
                           styleMask: [.titled, .closable, .miniaturizable, .resizable],
                           backing: .buffered, defer: false)
@@ -53,5 +54,4 @@ final class App: NSObject, NSApplicationDelegate {
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ a: NSApplication) -> Bool { true }
-    func applicationWillTerminate(_ n: Notification) { setKeepAwake(false) }
 }
