@@ -15,6 +15,18 @@ make help     # list targets
 ```
 The app is signed ad-hoc (works on this Mac). For distribution: `make SIGN_ID="Developer ID Application: ..."` (notarization is still required).
 
+## Installation
+Build from source and install to `~/Applications`:
+```
+git clone <repository-url> second-display
+cd second-display
+make install
+open ~/Applications/SecondDisplay.app
+```
+On first launch macOS asks for camera and microphone access — allow both. You can change this later in System Settings → Privacy & Security.
+
+If you received a prebuilt copy that is not notarized, macOS blocks it. Allow it once in System Settings → Privacy & Security → "Open Anyway", or run `xattr -dr com.apple.quarantine SecondDisplay.app`.
+
 ## Usage
 Menus at the top of the screen: **Video** (device, format), **Audio** (source or off), **Options** (prevent display sleep, start in full screen, always on top, mute ⇧⌘M, scaling), **Window** (tiling, full screen ⌃⌘F).
 
