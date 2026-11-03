@@ -12,7 +12,8 @@ Aplikacja natywna na macOS, która wyświetla w oknie obraz z urządzenia przech
 - Poza zakresem (na razie): start przy logowaniu, nagrywanie, zrzuty ekranu, suwak głośności.
 
 ## Struktura
-- `Sources/main.swift` – cała aplikacja (AppKit + AVFoundation, jedna sesja `AVCaptureSession`, dźwięk przez `AVCaptureAudioPreviewOutput`).
+- `Sources/` – kod aplikacji (AppKit + AVFoundation, jedna sesja `AVCaptureSession`, dźwięk przez `AVCaptureAudioPreviewOutput`), klasa `App` rozbita na rozszerzenia:
+  `main.swift` (start), `App.swift` (stan, okno, cykl życia), `Capture.swift` (urządzenia, formaty, hot-plug), `Menu.swift` (menu i akcje), `Power.swift` (blokada usypiania), `Preferences.swift` (ustawienia z UserDefaults).
 - `Config/Info.plist`, `Config/SecondDisplay.entitlements` – wersja, uprawnienia (kamera, mikrofon; hardened runtime).
 - `Resources/` – `AppIcon.icon` (Icon Composer, Liquid Glass; kompilowana przez `actool`), `{en,pl}.lproj` (`Localizable.strings`, `InfoPlist.strings`), `uninstall.sh` (kopiowany do bundla; usuwa aplikację, preferencje, cache, uprawnienia TCC). Bundle ID: `com.mmacierzanka.seconddisplay`.
 - `scripts/check-strings.sh` – spójność tłumaczeń en/pl.

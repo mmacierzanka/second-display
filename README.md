@@ -19,7 +19,7 @@ Podpis jest ad-hoc (działa na tym Macu). Do dystrybucji: `make SIGN_ID="Develop
 Menu u góry ekranu: **Obraz** (kamera, format), **Dźwięk** (źródło lub wyłączony), **Opcje** (blokada usypiania, pełny ekran przy starcie, na wierzchu, wyciszenie ⇧⌘M, skalowanie), **Okno** (kafelkowanie, pełny ekran ⌃⌘F).
 
 ## Struktura
-- `Sources/main.swift` – aplikacja (AppKit + AVFoundation)
+- `Sources/` – aplikacja (AppKit + AVFoundation): `App` (stan, okno), `Capture` (urządzenia, formaty), `Menu`, `Power`, `Preferences`, `main` (start)
 - `Config/` – `Info.plist`, entitlements (kamera, mikrofon)
 - `Resources/` – ikona (`AppIcon.icon`, Icon Composer), tłumaczenia en/pl, `uninstall.sh`
 - `scripts/check-strings.sh` – spójność tłumaczeń
