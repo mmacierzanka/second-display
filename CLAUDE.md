@@ -9,7 +9,7 @@ A native macOS app that shows video from a capture device (camera / capture card
 - Optional start in full screen. On by default, choice is remembered.
 - Localization: English and Polish (`Resources/{en,pl}.lproj`), following the system language.
 - Extras: per-device format (resolution/FPS), scaling modes (fit/fill/stretch), always on top, mute (⇧⌘M), Window menu (system tiling, full screen ⌃⌘F), automatic resume when a device is unplugged/replugged.
-- Autostart menu: launch the app when a chosen USB device is attached (`Sources/Autostart.swift`, per-user LaunchAgent with an IOKit match on USB vendor/product ID parsed from `AVCaptureDevice.modelID`). `uninstall.sh` must remove the agent.
+- Autostart menu: launch the app when a chosen USB device is attached (`Sources/Autostart.swift`, per-user LaunchAgent with an IOKit match on USB vendor/product ID parsed from `AVCaptureDevice.modelID`). `uninstall.sh` must remove the agent. The agent runs the app executable itself, and `main.swift` must keep acknowledging the `com.apple.iokit.matching` event stream — otherwise launchd relaunches the job every 10 s while the device is attached.
 - Out of scope (for now): launch at login, recording, screenshots, volume slider.
 
 ## Structure

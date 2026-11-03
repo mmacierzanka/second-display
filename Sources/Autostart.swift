@@ -37,7 +37,8 @@ extension App {
         }
         let plist: [String: Any] = [
             "Label": Self.agentLabel,
-            "ProgramArguments": ["/usr/bin/open", Bundle.main.bundlePath],
+            "ProgramArguments": [Bundle.main.executablePath ?? ""],  // the job itself must be the app so it can acknowledge the event
+            "LimitLoadToSessionType": "Aqua",
             "LaunchEvents": ["com.apple.iokit.matching": ["attach": [
                 "IOProviderClass": "IOUSBHostDevice", "idVendor": ids.vendor, "idProduct": ids.product, "IOMatchLaunchStream": true]]],
         ]

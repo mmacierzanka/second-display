@@ -16,6 +16,10 @@ final class App: NSObject, NSApplicationDelegate {
     let defaults = UserDefaults.standard
 
     func applicationDidFinishLaunching(_ n: Notification) {
+        // launched by the autostart agent while already running: just bring the running one forward
+        if let other = NSRunningApplication.runningApplications(withBundleIdentifier: Bundle.main.bundleIdentifier ?? "").first(where: { $0 != .current }) {
+            other.activate(); return NSApp.terminate(nil)
+        }
         guard !videoDevices().isEmpty else { return quitNoDevices() }
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 960, height: 540),
                           styleMask: [.titled, .closable, .miniaturizable, .resizable],
