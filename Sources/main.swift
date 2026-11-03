@@ -12,6 +12,7 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var sleepAssertion: IOPMAssertionID = 0
     var keepAwake = false
     var layer: AVCaptureVideoPreviewLayer!
+    var muted = false
     let defaults = UserDefaults.standard
 
     func applicationDidFinishLaunching(_ n: Notification) {
@@ -167,7 +168,11 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
             f.target = self; f.state = startFull ? .on : .off
             let t = NSMenuItem(title: NSLocalizedString("Always on top", comment: ""), action: #selector(toggleTop), keyEquivalent: "")
             t.target = self; t.state = onTop ? .on : .off
-            menu.addItem(k); menu.addItem(f); menu.addItem(t)
+            let m = NSMenuItem(title: NSLocalizedString("Mute", comment: ""), action: #selector(toggleMute), keyEquivalent: "m")
+            m.target = self; m.state = muted ? .on : .off
+            let fs = NSMenuItem(title: NSLocalizedString("Toggle full screen", comment: ""), action: #selector(fullScreen), keyEquivalent: "f")
+            fs.target = self
+            menu.addItem(k); menu.addItem(f); menu.addItem(t); menu.addItem(m); menu.addItem(fs)
             menu.addItem(.separator())
             menu.addItem(header(NSLocalizedString("Scaling", comment: "")))
             for (key, name) in [("fit", "Fit"), ("fill", "Fill"), ("stretch", "Stretch")] {
@@ -191,6 +196,8 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
         defaults.set(s.title, forKey: "format.\(d.uniqueID)"); applyFormat(d)
     }
     @objc func toggleTop() { defaults.set(!onTop, forKey: "onTop"); window.level = onTop ? .floating : .normal }
+    @objc func toggleMute() { muted.toggle(); preview.volume = muted ? 0 : 1 }
+    @objc func fullScreen() { window.toggleFullScreen(nil) }
     @objc func pickGravity(_ s: NSMenuItem) { defaults.set(s.representedObject as? String, forKey: "gravity"); layer.videoGravity = gravity }
     @objc func toggleAwake() { setKeepAwake(!keepAwake) }
 }
