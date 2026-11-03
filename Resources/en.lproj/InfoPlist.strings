@@ -1,0 +1,2 @@
+"NSCameraUsageDescription" = "Shows video from the capture device.";
+"NSMicrophoneUsageDescription" = "Plays audio from the selected input.";
