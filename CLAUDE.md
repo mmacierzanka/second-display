@@ -1,26 +1,26 @@
 # Second Display – brief
 
-## Cel
-Aplikacja natywna na macOS, która wyświetla w oknie obraz z urządzenia przechwytującego (kamerki / capture card) oraz odtwarza dźwięk z wybranego źródła (wejścia) dźwięku. Ma służyć jako "drugi monitor".
+## Goal
+A native macOS app that shows video from a capture device (camera / capture card) in a window and plays audio from a chosen input. It is meant to work as a "second monitor".
 
-## Wymagania
-- Menu (główne menu aplikacji u góry ekranu, nie ikona statusowa po prawej): wybór źródła obrazu, wybór źródła dźwięku oraz opcja wyłączenia dźwięku.
-- Opcjonalna (włączana/wyłączana) blokada usypiania ekranu w trakcie aktywności aplikacji. Domyślnie włączona, wybór zapamiętywany.
-- Opcjonalne uruchamianie na pełnym ekranie. Domyślnie włączone, wybór zapamiętywany.
-- Lokalizacja: angielski i polski (`Resources/{en,pl}.lproj`), język wg ustawień systemu.
-- Dodatki: wybór formatu (rozdzielczość/FPS) per urządzenie, tryby skalowania (dopasuj/wypełnij/rozciągnij), okno zawsze na wierzchu, wyciszenie (⇧⌘M), menu Okno (kafelkowanie systemowe, pełny ekran ⌃⌘F), automatyczne wznawianie po odpięciu/wpięciu urządzenia.
-- Poza zakresem (na razie): start przy logowaniu, nagrywanie, zrzuty ekranu, suwak głośności.
+## Requirements
+- Menus live in the app's main menu bar at the top of the screen (not a status-bar icon): video source, audio source, and an option to turn audio off.
+- Optional display-sleep prevention while the app is active. On by default, choice is remembered.
+- Optional start in full screen. On by default, choice is remembered.
+- Localization: English and Polish (`Resources/{en,pl}.lproj`), following the system language.
+- Extras: per-device format (resolution/FPS), scaling modes (fit/fill/stretch), always on top, mute (⇧⌘M), Window menu (system tiling, full screen ⌃⌘F), automatic resume when a device is unplugged/replugged.
+- Out of scope (for now): launch at login, recording, screenshots, volume slider.
 
-## Struktura
-- `Sources/` – kod aplikacji (AppKit + AVFoundation, jedna sesja `AVCaptureSession`, dźwięk przez `AVCaptureAudioPreviewOutput`), klasa `App` rozbita na rozszerzenia:
-  `main.swift` (start), `App.swift` (stan, okno, cykl życia), `Capture.swift` (urządzenia, formaty, hot-plug), `Menu.swift` (menu i akcje), `Power.swift` (blokada usypiania), `Preferences.swift` (ustawienia z UserDefaults).
-- `Config/Info.plist`, `Config/SecondDisplay.entitlements` – wersja, uprawnienia (kamera, mikrofon; hardened runtime).
-- `Resources/` – `AppIcon.icon` (Icon Composer, Liquid Glass; kompilowana przez `actool`), `{en,pl}.lproj` (`Localizable.strings`, `InfoPlist.strings`), `uninstall.sh` (kopiowany do bundla; usuwa aplikację, preferencje, cache, uprawnienia TCC). Bundle ID: `com.mmacierzanka.seconddisplay`.
-- `scripts/check-strings.sh` – spójność tłumaczeń en/pl.
-- `Makefile` – `make` (build do `build/SecondDisplay.app`), `run`, `check`, `install`, `uninstall`, `clean`, `help`. `SIGN_ID` domyślnie ad-hoc (`-`).
+## Structure
+- `Sources/` – app code (AppKit + AVFoundation, one `AVCaptureSession`, audio via `AVCaptureAudioPreviewOutput`). The `App` class is split into extensions:
+  `main.swift` (entry point), `App.swift` (state, window, lifecycle), `Capture.swift` (devices, formats, hot-plug), `Menu.swift` (menus and actions), `Power.swift` (sleep prevention), `Preferences.swift` (UserDefaults-backed settings).
+- `Config/Info.plist`, `Config/SecondDisplay.entitlements` – version, permissions (camera, microphone; hardened runtime).
+- `Resources/` – `AppIcon.icon` (Icon Composer, Liquid Glass; compiled by `actool`), `{en,pl}.lproj` (`Localizable.strings`, `InfoPlist.strings`), `uninstall.sh` (copied into the bundle; removes the app, preferences, caches, TCC permissions). Bundle ID: `com.mmacierzanka.seconddisplay`.
+- `scripts/check-strings.sh` – en/pl translation consistency.
+- `Makefile` – `make` (builds `build/SecondDisplay.app`), `run`, `check`, `install`, `uninstall`, `clean`, `help`. `SIGN_ID` defaults to ad-hoc (`-`).
 
-## Konwencje
-- Ustawienia w `UserDefaults` (klucze: `video`, `audio`, `keepAwake`, `startFull`, `onTop`, `gravity`, `format.<id>`).
-- Nowe napisy dodawaj przez `NSLocalizedString` oraz do obu plików `Localizable.strings`.
-- Przed commitem: `make check`. Wersja w `Config/Info.plist`, numer buildu = liczba commitów.
-- Commity: małe, osobne na funkcję, z linią `Co-Authored-By`.
+## Conventions
+- Settings live in `UserDefaults` (keys: `video`, `audio`, `keepAwake`, `startFull`, `onTop`, `gravity`, `format.<id>`).
+- Add new strings through `NSLocalizedString` and to both `Localizable.strings` files.
+- Run `make check` before committing. Version is in `Config/Info.plist`; build number = commit count.
+- Commits: small, one per feature, with a `Co-Authored-By` line.
