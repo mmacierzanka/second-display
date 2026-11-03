@@ -50,6 +50,14 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if session.canAddOutput(preview) { session.addOutput(preview) }
         session.commitConfiguration()
 
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: AVCaptureDevice.wasConnectedNotification, object: nil, queue: .main) { _ in self.restore() }
+        nc.addObserver(forName: AVCaptureDevice.wasDisconnectedNotification, object: nil, queue: .main) { n in
+            guard let d = n.object as? AVCaptureDevice else { return }
+            if d.uniqueID == self.videoInput?.device.uniqueID { self.swap(&self.videoInput, to: nil) }
+            if d.uniqueID == self.audioInput?.device.uniqueID { self.swap(&self.audioInput, to: nil) }
+        }
+
         AVCaptureDevice.requestAccess(for: .video) { _ in
             AVCaptureDevice.requestAccess(for: .audio) { _ in
                 DispatchQueue.main.async { self.restore() }
@@ -71,13 +79,15 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     func restore() {
-        if let id = defaults.string(forKey: "video"), let d = videoDevices().first(where: { $0.uniqueID == id }) {
-            setVideo(d)
-        } else if let d = videoDevices().first { setVideo(d) }
-        if let id = defaults.string(forKey: "audio"), let d = audioDevices().first(where: { $0.uniqueID == id }) {
+        if videoInput == nil {
+            if let id = defaults.string(forKey: "video"), let d = videoDevices().first(where: { $0.uniqueID == id }) {
+                setVideo(d)
+            } else if let d = videoDevices().first { setVideo(d) }
+        }
+        if audioInput == nil, let id = defaults.string(forKey: "audio"), let d = audioDevices().first(where: { $0.uniqueID == id }) {
             setAudio(d)
         }  // default: audio off until chosen
-        session.startRunning()
+        if !session.isRunning { session.startRunning() }
     }
 
     func swap(_ old: inout AVCaptureDeviceInput?, to device: AVCaptureDevice?) {
