@@ -5,6 +5,8 @@ extension App: NSMenuDelegate {
     func buildMainMenu() {
         let main = NSMenu()
         let appMenu = NSMenu()
+        appMenu.addItem(NSMenuItem(title: NSLocalizedString("About Second Display", comment: ""), action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: ""))
+        appMenu.addItem(.separator())
         appMenu.addItem(NSMenuItem(title: NSLocalizedString("Quit Second Display", comment: ""), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         for (title, sub) in [("", appMenu), (NSLocalizedString("Video", comment: ""), videoMenu), (NSLocalizedString("Audio", comment: ""), audioMenu), (NSLocalizedString("Autostart", comment: ""), autostartMenu), (NSLocalizedString("Options", comment: ""), optionsMenu), (NSLocalizedString("Window", comment: ""), windowMenu)] {
             let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
