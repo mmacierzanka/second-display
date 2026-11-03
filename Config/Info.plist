@@ -4,7 +4,7 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key><string>en</string>
 	<key>CFBundleLocalizations</key><array><string>en</string><string>pl</string></array>
-	<key>CFBundleExecutable</key><string>SecondDisplay</string>
+	<key>CFBundleExecutable</key><string>Second Display</string>
 	<key>CFBundleIdentifier</key><string>com.mmacierzanka.seconddisplay</string>
 	<key>CFBundleName</key><string>Second Display</string>
 	<key>CFBundlePackageType</key><string>APPL</string>

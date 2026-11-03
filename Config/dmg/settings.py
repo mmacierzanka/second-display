@@ -17,7 +17,7 @@ icon_size = 128
 text_size = 13
 arrange_by = None
 icon_locations = {
-    'SecondDisplay.app': (198, 195),
+    'Second Display.app': (198, 195),
     'Applications': (529, 195),
     'Read Me First.txt': (363, 435),
 }

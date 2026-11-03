@@ -1,7 +1,7 @@
 SECOND DISPLAY — INSTALLATION
 =============================
 
-1. Drag "SecondDisplay" onto the "Applications" folder in this window.
+1. Drag "Second Display" onto the "Applications" folder in this window.
 
 2. Open Second Display from Applications.
    macOS will most likely refuse: this app is not notarized by Apple
@@ -13,11 +13,11 @@ SECOND DISPLAY — INSTALLATION
    A) System Settings
       - Open System Settings > Privacy & Security.
       - Scroll to the Security section; you will see
-        "SecondDisplay was blocked...". Click "Open Anyway".
+        "Second Display was blocked...". Click "Open Anyway".
       - Confirm with your password / Touch ID, then click "Open".
 
    B) Terminal
-      xattr -dr com.apple.quarantine /Applications/SecondDisplay.app
+      xattr -dr com.apple.quarantine "/Applications/Second Display.app"
 
    You only need to do this once per downloaded copy.
 
@@ -29,4 +29,4 @@ REQUIREMENTS
 
 UNINSTALL
   Run this in Terminal to remove the app and every trace it leaves:
-    /Applications/SecondDisplay.app/Contents/Resources/uninstall.sh
+    "/Applications/Second Display.app/Contents/Resources/uninstall.sh"
