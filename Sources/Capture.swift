@@ -4,7 +4,11 @@ import AVFoundation
 extension App {
     func observeDevices() {
         let nc = NotificationCenter.default
-        nc.addObserver(forName: AVCaptureDevice.wasConnectedNotification, object: nil, queue: .main) { _ in self.restore() }
+        nc.addObserver(forName: AVCaptureDevice.wasConnectedNotification, object: nil, queue: .main) { n in
+            // the autostart device takes over the picture as soon as it appears
+            if let d = n.object as? AVCaptureDevice, d.hasMediaType(.video), d.uniqueID == self.autostartID { self.setVideo(d) }
+            self.restore()
+        }
         nc.addObserver(forName: AVCaptureDevice.wasDisconnectedNotification, object: nil, queue: .main) { n in
             guard let d = n.object as? AVCaptureDevice else { return }
             if d.uniqueID == self.videoInput?.device.uniqueID { self.swap(&self.videoInput, to: nil) }
@@ -35,9 +39,9 @@ extension App {
 
     func restore() {
         if videoInput == nil {
-            if let id = defaults.string(forKey: "video"), let d = videoDevices().first(where: { $0.uniqueID == id }) {
-                setVideo(d)
-            } else if let d = videoDevices().first { setVideo(d) }
+            let devices = videoDevices()
+            let preferred = [autostartID, defaults.string(forKey: "video")].compactMap { id in devices.first { $0.uniqueID == id } }
+            if let d = preferred.first ?? devices.first { setVideo(d) }
         }
         if audioInput == nil, let id = defaults.string(forKey: "audio"), let d = audioDevices().first(where: { $0.uniqueID == id }) {
             setAudio(d)

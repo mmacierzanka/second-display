@@ -20,3 +20,5 @@
 "Bring All to Front" = "Przenieś wszystko na wierzch";
 "No capture devices found" = "Nie znaleziono urządzeń przechwytujących";
 "Connect a camera or capture card and launch Second Display again." = "Podłącz kamerę lub urządzenie przechwytujące i uruchom Second Display ponownie.";
+"Autostart" = "Autostart";
+"(not connected)" = "(niepodłączone)";

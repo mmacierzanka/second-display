@@ -8,7 +8,7 @@ final class App: NSObject, NSApplicationDelegate {
     var videoInput: AVCaptureDeviceInput?
     var audioInput: AVCaptureDeviceInput?
     var window: NSWindow!
-    let videoMenu = NSMenu(), audioMenu = NSMenu(), optionsMenu = NSMenu(), windowMenu = NSMenu()
+    let videoMenu = NSMenu(), audioMenu = NSMenu(), optionsMenu = NSMenu(), windowMenu = NSMenu(), autostartMenu = NSMenu()
     var sleepAssertion: IOPMAssertionID = 0
     var keepAwake = false
     var layer: AVCaptureVideoPreviewLayer!

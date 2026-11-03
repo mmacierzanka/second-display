@@ -6,7 +6,7 @@ extension App: NSMenuDelegate {
         let main = NSMenu()
         let appMenu = NSMenu()
         appMenu.addItem(NSMenuItem(title: NSLocalizedString("Quit Second Display", comment: ""), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
-        for (title, sub) in [("", appMenu), (NSLocalizedString("Video", comment: ""), videoMenu), (NSLocalizedString("Audio", comment: ""), audioMenu), (NSLocalizedString("Options", comment: ""), optionsMenu), (NSLocalizedString("Window", comment: ""), windowMenu)] {
+        for (title, sub) in [("", appMenu), (NSLocalizedString("Video", comment: ""), videoMenu), (NSLocalizedString("Audio", comment: ""), audioMenu), (NSLocalizedString("Autostart", comment: ""), autostartMenu), (NSLocalizedString("Options", comment: ""), optionsMenu), (NSLocalizedString("Window", comment: ""), windowMenu)] {
             let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
             sub.title = title; sub.delegate = self; item.submenu = sub
             main.addItem(item)
@@ -56,6 +56,8 @@ extension App: NSMenuDelegate {
                 it.state = d.uniqueID == audioInput?.device.uniqueID ? .on : .off
                 menu.addItem(it)
             }
+        } else if menu === autostartMenu {
+            fillAutostartMenu(menu)
         } else if menu === optionsMenu {
             menu.removeAllItems()
             let k = NSMenuItem(title: NSLocalizedString("Prevent display sleep", comment: ""), action: #selector(toggleAwake), keyEquivalent: "")

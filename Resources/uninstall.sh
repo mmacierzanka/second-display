@@ -6,6 +6,8 @@ APP="${0:A:h:h:h}"
 read -q "?Delete $APP and all its data? [y/N] " || { echo; echo Cancelled; exit 0; }
 echo
 pkill -x SecondDisplay 2>/dev/null
+launchctl bootout "gui/$(id -u)/$ID.autostart" 2>/dev/null   # launch-on-connect agent
+rm -f ~/Library/LaunchAgents/$ID.autostart.plist
 defaults delete "$ID" 2>/dev/null
 tccutil reset All "$ID" >/dev/null 2>&1   # camera / microphone permissions
 L=~/Library

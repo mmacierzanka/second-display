@@ -34,6 +34,8 @@ If you received a prebuilt copy (the `.dmg`), drag the app to Applications. It i
 ## Usage
 Menus at the top of the screen: **Video** (device, format), **Audio** (source or off), **Options** (prevent display sleep, start in full screen, always on top, mute ⇧⌘M, scaling), **Window** (tiling, full screen ⌃⌘F).
 
+**Autostart** opens the app whenever the chosen USB capture device is plugged in (and makes it the active video source). It installs a per-user LaunchAgent (`~/Library/LaunchAgents/com.mmacierzanka.seconddisplay.autostart.plist`) matching the device's USB vendor/product ID, so only USB (UVC) devices can be chosen. Choose **Off** to remove it; the uninstall script removes it too.
+
 ## Layout
 - `Sources/` – the app (AppKit + AVFoundation): `App` (state, window), `Capture` (devices, formats), `Menu`, `Power`, `Preferences`, `main` (entry point)
 - `Config/` – `Info.plist`, entitlements (camera, microphone), `dmg/` (instructions shipped in the disk image)
