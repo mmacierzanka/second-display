@@ -13,6 +13,7 @@ cat > "$A/Contents/Info.plist" <<P
 <key>CFBundleExecutable</key><string>SecondDisplay</string>
 <key>CFBundleIdentifier</key><string>local.seconddisplay</string>
 <key>CFBundleIconFile</key><string>AppIcon</string>
+<key>CFBundleIconName</key><string>AppIcon</string>
 <key>CFBundleName</key><string>Second Display</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>NSPrincipalClass</key><string>NSApplication</string>
@@ -21,5 +22,5 @@ cat > "$A/Contents/Info.plist" <<P
 </dict></plist>
 P
 for L in en pl; do mkdir -p "$A/Contents/Resources/$L.lproj"; cp Resources/$L.lproj/*.strings "$A/Contents/Resources/$L.lproj/"; done
-cp Resources/AppIcon.icns "$A/Contents/Resources/"
+xcrun actool Resources/AppIcon.icon --compile "$A/Contents/Resources" --platform macosx --minimum-deployment-target 26.0 --app-icon AppIcon --output-partial-info-plist /dev/null >/dev/null
 codesign --force --sign - "$A"
