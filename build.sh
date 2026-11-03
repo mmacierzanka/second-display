@@ -12,6 +12,7 @@ cat > "$A/Contents/Info.plist" <<P
 <key>CFBundleLocalizations</key><array><string>en</string><string>pl</string></array>
 <key>CFBundleExecutable</key><string>SecondDisplay</string>
 <key>CFBundleIdentifier</key><string>local.seconddisplay</string>
+<key>CFBundleIconFile</key><string>AppIcon</string>
 <key>CFBundleName</key><string>Second Display</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>NSPrincipalClass</key><string>NSApplication</string>
@@ -20,4 +21,5 @@ cat > "$A/Contents/Info.plist" <<P
 </dict></plist>
 P
 for L in en pl; do mkdir -p "$A/Contents/Resources/$L.lproj"; cp Resources/$L.lproj/*.strings "$A/Contents/Resources/$L.lproj/"; done
+cp Resources/AppIcon.icns "$A/Contents/Resources/"
 codesign --force --sign - "$A"
