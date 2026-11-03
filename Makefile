@@ -7,6 +7,7 @@ BUILDNUM := $(shell git rev-list --count HEAD 2>/dev/null || echo 1)
 
 VERSION  := $(shell /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" Config/Info.plist)
 DMG      := build/SecondDisplay-$(VERSION).dmg
+VOLNAME  ?= Second Display
 
 .PHONY: build run clean install uninstall check dmg help
 build: $(APP) ## Build build/SecondDisplay.app
@@ -42,14 +43,15 @@ check: build ## Lint sources, plists, strings and the built bundle
 	scripts/check-strings.sh
 	codesign --verify --strict $(APP)
 
-dmg: build ## Build a distributable disk image (not notarized)
-	rm -rf build/dmg $(DMG) && mkdir build/dmg
-	cp -R $(APP) build/dmg/
-	ln -s /Applications build/dmg/Applications
-	cp "Config/dmg/Read Me First.txt" build/dmg/
-	hdiutil create -volname "Second Display" -srcfolder build/dmg -ov -format UDZO $(DMG)
-	hdiutil verify $(DMG)
-	rm -rf build/dmg
+DMGBUILD := build/venv/bin/dmgbuild
+
+$(DMGBUILD):
+	python3 -m venv build/venv && build/venv/bin/pip install -q dmgbuild
+
+dmg: build $(DMGBUILD) ## Build a distributable disk image (not notarized)
+	rm -f $(DMG)
+	$(DMGBUILD) -s Config/dmg/settings.py -D app=$(APP) "$(VOLNAME)" $(DMG)
+	hdiutil verify $(DMG) | tail -1
 
 help: ## List targets
 	@grep -E '^[a-z]+:.*##' Makefile | sed 's/:.*##/ -/'
