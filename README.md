@@ -45,3 +45,6 @@ Menus at the top of the screen: **Video** (device, format), **Audio** (source or
 ## Settings and uninstall
 Settings: `~/Library/Preferences/com.mmacierzanka.seconddisplay.plist`.
 To remove the app and all its traces: `make uninstall` or `SecondDisplay.app/Contents/Resources/uninstall.sh`.
+
+## License
+MIT — see [LICENSE](LICENSE).
