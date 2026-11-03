@@ -3,7 +3,7 @@ import AVFoundation
 
 // Launch-on-connect: a per-user LaunchAgent that opens the app when the chosen USB device is attached.
 extension App {
-    static let agentLabel = "com.mmacierzanka.seconddisplay.autostart"
+    static let agentLabel = "com.mmacierzanka.second-display.autostart"
     var agentURL: URL {
         FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/LaunchAgents/\(Self.agentLabel).plist")
     }

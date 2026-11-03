@@ -37,7 +37,7 @@ clean: ## Remove build output
 	rm -rf build
 
 install: build ## Copy to ~/Applications
-	mkdir -p ~/Applications && rm -rf ~/Applications/SecondDisplay.app "$$HOME/Applications/$(NAME).app" && cp -R "$(APP)" ~/Applications/
+	mkdir -p ~/Applications && rm -rf "$$HOME/Applications/$(NAME).app" && cp -R "$(APP)" ~/Applications/
 
 uninstall: ## Remove the installed app and all its leftovers
 	"$$HOME/Applications/$(NAME).app/Contents/Resources/uninstall.sh"

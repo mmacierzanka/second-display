@@ -34,7 +34,7 @@ If you received a prebuilt copy (the `.dmg`), drag the app to Applications. It i
 ## Usage
 Menus at the top of the screen: **Video** (device, format), **Audio** (source or off), **Options** (prevent display sleep, start in full screen, always on top, mute ⇧⌘M, scaling), **Window** (tiling, full screen ⌃⌘F).
 
-**Autostart** opens the app whenever the chosen USB capture device is plugged in (and makes it the active video source). It installs a per-user LaunchAgent (`~/Library/LaunchAgents/com.mmacierzanka.seconddisplay.autostart.plist`) matching the device's USB vendor/product ID, so only USB (UVC) devices can be chosen. Choose **Off** to remove it; the uninstall script removes it too.
+**Autostart** opens the app whenever the chosen USB capture device is plugged in (and makes it the active video source). It installs a per-user LaunchAgent (`~/Library/LaunchAgents/com.mmacierzanka.second-display.autostart.plist`) matching the device's USB vendor/product ID, so only USB (UVC) devices can be chosen. Choose **Off** to remove it; the uninstall script removes it too.
 
 ## Layout
 - `Sources/` – the app (AppKit + AVFoundation): `App` (state, window), `Capture` (devices, formats), `Menu`, `Power`, `Preferences`, `main` (entry point)
@@ -43,7 +43,7 @@ Menus at the top of the screen: **Video** (device, format), **Audio** (source or
 - `scripts/check-strings.sh` – translation consistency
 
 ## Settings and uninstall
-Settings: `~/Library/Preferences/com.mmacierzanka.seconddisplay.plist`.
+Settings: `~/Library/Preferences/com.mmacierzanka.second-display.plist`.
 To remove the app and all its traces: `make uninstall` or `"Second Display.app/Contents/Resources/uninstall.sh"`.
 
 ## License
