@@ -11,6 +11,7 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let videoMenu = NSMenu(), audioMenu = NSMenu(), optionsMenu = NSMenu()
     var sleepAssertion: IOPMAssertionID = 0
     var keepAwake = false
+    var layer: AVCaptureVideoPreviewLayer!
     let defaults = UserDefaults.standard
 
     func applicationDidFinishLaunching(_ n: Notification) {
@@ -19,8 +20,8 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
                           backing: .buffered, defer: false)
         window.title = "Second Display"
         window.contentView!.wantsLayer = true
-        let layer = AVCaptureVideoPreviewLayer(session: session)
-        layer.videoGravity = .resizeAspect
+        layer = AVCaptureVideoPreviewLayer(session: session)
+        layer.videoGravity = gravity
         layer.frame = window.contentView!.bounds
         layer.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
         window.contentView!.layer!.addSublayer(layer)
@@ -164,6 +165,13 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
             let f = NSMenuItem(title: NSLocalizedString("Start in full screen", comment: ""), action: #selector(toggleFull), keyEquivalent: "")
             f.target = self; f.state = startFull ? .on : .off
             menu.addItem(k); menu.addItem(f)
+            menu.addItem(.separator())
+            menu.addItem(header(NSLocalizedString("Scaling", comment: "")))
+            for (key, name) in [("fit", "Fit"), ("fill", "Fill"), ("stretch", "Stretch")] {
+                let it = NSMenuItem(title: NSLocalizedString(name, comment: ""), action: #selector(pickGravity(_:)), keyEquivalent: "")
+                it.target = self; it.representedObject = key; it.state = (defaults.string(forKey: "gravity") ?? "fit") == key ? .on : .off
+                menu.addItem(it)
+            }
         }
     }
     func header(_ s: String) -> NSMenuItem { let i = NSMenuItem(title: s, action: nil, keyEquivalent: ""); i.isEnabled = false; return i }
@@ -171,10 +179,14 @@ final class App: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc func pickAudio(_ s: NSMenuItem) { setAudio(s.representedObject as? AVCaptureDevice) }
     var startFull: Bool { defaults.object(forKey: "startFull") as? Bool ?? true }
     @objc func toggleFull() { defaults.set(!startFull, forKey: "startFull") }
+    var gravity: AVLayerVideoGravity {
+        switch defaults.string(forKey: "gravity") { case "fill": return .resizeAspectFill; case "stretch": return .resize; default: return .resizeAspect }
+    }
     @objc func pickFormat(_ s: NSMenuItem) {
         guard let d = videoInput?.device else { return }
         defaults.set(s.title, forKey: "format.\(d.uniqueID)"); applyFormat(d)
     }
+    @objc func pickGravity(_ s: NSMenuItem) { defaults.set(s.representedObject as? String, forKey: "gravity"); layer.videoGravity = gravity }
     @objc func toggleAwake() { setKeepAwake(!keepAwake) }
 }
 
