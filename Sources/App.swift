@@ -21,6 +21,13 @@ final class App: NSObject, NSApplicationDelegate {
             other.activate(); return NSApp.terminate(nil)
         }
         guard !videoDevices().isEmpty else { return quitNoDevices() }
+        AVCaptureDevice.requestAccess(for: .video) { granted in
+            DispatchQueue.main.async { granted ? self.start() : self.quitCameraDenied() }
+        }
+    }
+
+    // runs once camera access is granted
+    private func start() {
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 960, height: 540),
                           styleMask: [.titled, .closable, .miniaturizable, .resizable],
                           backing: .buffered, defer: false)
@@ -50,10 +57,8 @@ final class App: NSObject, NSApplicationDelegate {
 
         observeDevices()
 
-        AVCaptureDevice.requestAccess(for: .video) { _ in
-            AVCaptureDevice.requestAccess(for: .audio) { _ in
-                DispatchQueue.main.async { self.restore() }
-            }
+        AVCaptureDevice.requestAccess(for: .audio) { _ in
+            DispatchQueue.main.async { self.restore() }
         }
     }
 

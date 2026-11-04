@@ -48,12 +48,17 @@ extension App: NSMenuDelegate {
             }
         } else if menu === audioMenu {
             menu.removeAllItems()
-            let off = NSMenuItem(title: NSLocalizedString("Off", comment: ""), action: #selector(pickAudio(_:)), keyEquivalent: "")
+            let pick = micBlocked ? nil : #selector(pickAudio(_:))  // no action = greyed out
+            if micBlocked {
+                menu.addItem(header(NSLocalizedString("Microphone access denied. Enable it in System Settings.", comment: "")))
+                menu.addItem(.separator())
+            }
+            let off = NSMenuItem(title: NSLocalizedString("Off", comment: ""), action: pick, keyEquivalent: "")
             off.target = self; off.state = audioInput == nil ? .on : .off
             menu.addItem(off)
             menu.addItem(.separator())
             for d in audioDevices() {
-                let it = NSMenuItem(title: d.localizedName, action: #selector(pickAudio(_:)), keyEquivalent: "")
+                let it = NSMenuItem(title: d.localizedName, action: pick, keyEquivalent: "")
                 it.target = self; it.representedObject = d
                 it.state = d.uniqueID == audioInput?.device.uniqueID ? .on : .off
                 menu.addItem(it)
