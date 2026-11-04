@@ -8,7 +8,7 @@ A native macOS app that shows video from a capture device (camera / capture card
 - Optional display-sleep prevention while the app is active. On by default, choice is remembered.
 - Optional start in full screen. On by default, choice is remembered.
 - Localization: English and Polish (`Resources/{en,pl}.lproj`), following the system language.
-- Extras: per-device format (resolution/FPS), scaling modes (fit/fill/stretch), always on top, mute (⇧⌘M), Window menu (system tiling, full screen ⌃⌘F), automatic resume when a device is unplugged/replugged.
+- Extras: per-device format (resolution/FPS), scaling modes (fit/fill/stretch), always on top, mute (⇧⌘M), Window menu (system tiling, full screen ⌃⌘F), automatic resume when a device is unplugged/replugged, optional quit when the active video device is disconnected (relies on the Autostart agent to relaunch).
 - Autostart menu: launch the app when a chosen USB device is attached (`Sources/Autostart.swift`, per-user LaunchAgent with an IOKit match on USB vendor/product ID parsed from `AVCaptureDevice.modelID`). `uninstall.sh` must remove the agent. The agent runs the app executable itself, and `main.swift` must keep acknowledging the `com.apple.iokit.matching` event stream — otherwise launchd relaunches the job every 10 s while the device is attached.
 - Out of scope (for now): launch at login, recording, screenshots, volume slider.
 
@@ -21,7 +21,7 @@ A native macOS app that shows video from a capture device (camera / capture card
 - `Makefile` – `make` (builds `build/Second Display.app`), `run`, `check`, `install`, `uninstall`, `dmg`, `clean`, `help`. Builds are universal (arm64 + x86_64, macOS 26+). `make dmg` makes an un-notarized DMG with `Config/dmg/Read Me First.txt`. `SIGN_ID` defaults to ad-hoc (`-`).
 
 ## Conventions
-- Settings live in `UserDefaults` (keys: `video`, `audio`, `autostart`, `autostartName`, `keepAwake`, `startFull`, `onTop`, `gravity`, `format.<id>`).
+- Settings live in `UserDefaults` (keys: `video`, `audio`, `autostart`, `autostartName`, `keepAwake`, `startFull`, `quitOnDisconnect`, `onTop`, `gravity`, `format.<id>`).
 - Add new strings through `NSLocalizedString` and to both `Localizable.strings` files.
 - Run `make check` before committing. Version is in `Config/Info.plist`; build number = commit count.
 - Work on a feature branch (`feature/<topic>`, `fix/<topic>`) and open a PR with `gh pr create`; do not commit straight to `main`.
