@@ -16,16 +16,26 @@ extension App {
         }
     }
 
-    func quitNoDevices() {
+    func quitWithError(_ title: String, _ info: String) {
         let alert = NSAlert()
         alert.alertStyle = .warning
-        alert.messageText = NSLocalizedString("No capture devices found", comment: "")
-        alert.informativeText = NSLocalizedString("Connect a camera or capture card and launch Second Display again.", comment: "")
+        alert.messageText = title
+        alert.informativeText = info
         alert.addButton(withTitle: "OK")
         NSApp.activate()
         alert.runModal()
         NSApp.terminate(nil)
     }
+    func quitNoDevices() {
+        quitWithError(NSLocalizedString("No capture devices found", comment: ""),
+                      NSLocalizedString("Connect a camera or capture card and launch Second Display again.", comment: ""))
+    }
+    func quitCameraDenied() {
+        quitWithError(NSLocalizedString("Camera access denied", comment: ""),
+                      NSLocalizedString("Allow camera access for Second Display in System Settings > Privacy & Security > Camera, then launch it again.", comment: ""))
+    }
+    // .notDetermined is not blocked: the prompt is still to come
+    var micBlocked: Bool { [.denied, .restricted].contains(AVCaptureDevice.authorizationStatus(for: .audio)) }
 
     // MARK: devices
     func videoDevices() -> [AVCaptureDevice] {
@@ -43,7 +53,7 @@ extension App {
             let preferred = [autostartID, defaults.string(forKey: "video")].compactMap { id in devices.first { $0.uniqueID == id } }
             if let d = preferred.first ?? devices.first { setVideo(d) }
         }
-        if audioInput == nil, let id = defaults.string(forKey: "audio"), let d = audioDevices().first(where: { $0.uniqueID == id }) {
+        if audioInput == nil, !micBlocked, let id = defaults.string(forKey: "audio"), let d = audioDevices().first(where: { $0.uniqueID == id }) {
             setAudio(d)
         }  // default: audio off until chosen
         if !session.isRunning { session.startRunning() }

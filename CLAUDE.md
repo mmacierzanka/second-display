@@ -24,4 +24,5 @@ A native macOS app that shows video from a capture device (camera / capture card
 - Settings live in `UserDefaults` (keys: `video`, `audio`, `autostart`, `autostartName`, `keepAwake`, `startFull`, `onTop`, `gravity`, `format.<id>`).
 - Add new strings through `NSLocalizedString` and to both `Localizable.strings` files.
 - Run `make check` before committing. Version is in `Config/Info.plist`; build number = commit count.
-- Commits: small, one per feature, with a `Co-Authored-By` line.
+- Work on a feature branch (`feature/<topic>`, `fix/<topic>`) and open a PR with `gh pr create`; do not commit straight to `main`.
+- Commits follow [Conventional Commits](https://www.conventionalcommits.org), in English: `feat:`, `fix:`, `docs:`, `refactor:`, `build:`, `chore:` (optional scope, e.g. `feat(menu):`), imperative subject under ~72 chars. Small, one per change, with a `Co-Authored-By` line.

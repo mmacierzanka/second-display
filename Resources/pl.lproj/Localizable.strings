@@ -23,3 +23,6 @@
 "Autostart" = "Autostart";
 "(not connected)" = "(niepodłączone)";
 "About Second Display" = "O programie Second Display";
+"Camera access denied" = "Brak dostępu do kamery";
+"Allow camera access for Second Display in System Settings > Privacy & Security > Camera, then launch it again." = "Zezwól Second Display na dostęp do kamery w Ustawieniach systemowych > Prywatność i ochrona > Kamera i uruchom aplikację ponownie.";
+"Microphone access denied. Enable it in System Settings." = "Brak dostępu do mikrofonu. Włącz go w Ustawieniach systemowych.";
