@@ -77,11 +77,26 @@ extension App {
     // MARK: formats
     func dims(_ f: AVCaptureDevice.Format) -> CMVideoDimensions { CMVideoFormatDescriptionGetDimensions(f.formatDescription) }
     func fps(_ f: AVCaptureDevice.Format) -> Int { Int((f.videoSupportedFrameRateRanges.map(\.maxFrameRate).max() ?? 0).rounded()) }
-    func label(_ f: AVCaptureDevice.Format) -> String { "\(dims(f).width)x\(dims(f).height) @ \(fps(f)) fps" }
+    func codec(_ f: AVCaptureDevice.Format) -> String {
+        let c = CMFormatDescriptionGetMediaSubType(f.formatDescription)
+        let names: [FourCharCode: String] = [
+            kCVPixelFormatType_422YpCbCr8_yuvs: "YUY2", kCVPixelFormatType_422YpCbCr8: "UYVY",
+            kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange: "NV12", kCVPixelFormatType_420YpCbCr8BiPlanarFullRange: "NV12",
+            kCMVideoCodecType_JPEG_OpenDML: "MJPEG", kCMVideoCodecType_JPEG: "JPEG"]
+        return names[c] ?? String(bytes: [24, 16, 8, 0].map { UInt8(c >> $0 & 0xFF) }, encoding: .ascii) ?? "?"
+    }
+    func key(_ f: AVCaptureDevice.Format) -> String { "\(dims(f).width)x\(dims(f).height)@\(fps(f))/\(codec(f))" }
+
+    /// The three independent format attributes: menu title, displayed value, sort order.
+    var attributes: [(title: String, value: (AVCaptureDevice.Format) -> String, order: (AVCaptureDevice.Format) -> Int)] {
+        [(NSLocalizedString("Resolution", comment: ""), { "\(self.dims($0).width)x\(self.dims($0).height)" }, { Int(self.dims($0).width) * 10000 + Int(self.dims($0).height) }),
+         (NSLocalizedString("Frame rate", comment: ""), { "\(self.fps($0)) fps" }, { self.fps($0) }),
+         (NSLocalizedString("Pixel format", comment: ""), { self.codec($0) }, { _ in 0 })]
+    }
 
     func applyFormat(_ d: AVCaptureDevice) {
         guard let l = defaults.string(forKey: "format.\(d.uniqueID)"),
-              let f = d.formats.first(where: { label($0) == l }), (try? d.lockForConfiguration()) != nil else { return }
+              let f = d.formats.first(where: { key($0) == l }), (try? d.lockForConfiguration()) != nil else { return }
         d.activeFormat = f
         d.activeVideoMinFrameDuration = CMTime(value: 1, timescale: CMTimeScale(fps(f)))
         d.activeVideoMaxFrameDuration = d.activeVideoMinFrameDuration
