@@ -41,7 +41,7 @@ extension App: NSMenuDelegate {
                 for (i, attr) in attributes.enumerated() {
                     let sub = NSMenu()
                     let values = Dictionary(d.formats.map { (attr.value($0), attr.order($0)) }, uniquingKeysWith: max)
-                    for v in values.sorted(by: { ($0.value, $1.key) > ($1.value, $0.key) }).map(\.key) {
+                    for v in values.sorted(by: { ($0.value, $0.key) > ($1.value, $1.key) }).map(\.key) {
                         let it = NSMenuItem(title: v, action: #selector(pickAttribute(_:)), keyEquivalent: "")
                         it.target = self; it.tag = i; it.representedObject = v
                         it.state = attr.value(d.activeFormat) == v ? .on : .off
