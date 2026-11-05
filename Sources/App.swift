@@ -8,6 +8,7 @@ final class App: NSObject, NSApplicationDelegate {
     var videoInput: AVCaptureDeviceInput?
     var audioInput: AVCaptureDeviceInput?
     var window: NSWindow!
+    var cursorTimer: Timer?
     let videoMenu = NSMenu(), audioMenu = NSMenu(), optionsMenu = NSMenu(), windowMenu = NSMenu(), autostartMenu = NSMenu()
     var sleepAssertion: IOPMAssertionID = 0
     var keepAwake = false
@@ -41,6 +42,7 @@ final class App: NSObject, NSApplicationDelegate {
         window.contentView!.layer!.addSublayer(layer)
         window.contentView!.layer!.backgroundColor = NSColor.black.cgColor
         window.center()
+        hideCursorWhenIdle()
         window.makeKeyAndOrderFront(nil)
         if startFull { window.toggleFullScreen(nil) }
 

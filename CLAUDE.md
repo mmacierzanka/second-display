@@ -14,7 +14,7 @@ A native macOS app that shows video from a capture device (camera / capture card
 
 ## Structure
 - `Sources/` – app code (AppKit + AVFoundation, one `AVCaptureSession`, audio via `AVCaptureAudioPreviewOutput`). The `App` class is split into extensions:
-  `main.swift` (entry point), `App.swift` (state, window, lifecycle), `Capture.swift` (devices, formats, hot-plug), `Menu.swift` (menus and actions), `Power.swift` (sleep prevention), `Autostart.swift` (launch-on-connect agent), `Preferences.swift` (UserDefaults-backed settings).
+  `main.swift` (entry point), `App.swift` (state, window, lifecycle), `Capture.swift` (devices, formats, hot-plug), `Menu.swift` (menus and actions), `Power.swift` (sleep prevention), `Autostart.swift` (launch-on-connect agent), `Cursor.swift` (hide idle pointer), `Preferences.swift` (UserDefaults-backed settings).
 - `Config/Info.plist`, `Config/second-display.entitlements`, `Config/dmg/` – version, permissions (camera, microphone; hardened runtime).
 - `Resources/` – `AppIcon.icon` (Icon Composer, Liquid Glass; compiled by `actool`), `{en,pl}.lproj` (`Localizable.strings`, `InfoPlist.strings`), `uninstall.sh` (copied into the bundle; removes the app, preferences, caches, TCC permissions). Bundle ID: `com.mmacierzanka.second-display`.
 - `scripts/check-strings.sh` – en/pl translation consistency. `scripts/make-dmg-background.swift` regenerates `Config/dmg/background.png`; keep its size and icon coordinates in sync with `Config/dmg/settings.py` (dmgbuild layout, installed into `build/venv` on first `make dmg`).
