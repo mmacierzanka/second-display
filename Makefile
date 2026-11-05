@@ -13,7 +13,7 @@ VERSION  := $(shell /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionStrin
 DMG      := build/second-display-$(VERSION).dmg
 VOLNAME  ?= $(NAME)
 
-.PHONY: build run clean install uninstall check dmg help
+.PHONY: build run clean install install-user uninstall check dmg help
 build: $(STAMP) ## Build build/Second Display.app
 
 $(STAMP): Makefile $(SRC) $(RES) Config/Info.plist $(ENTITLEMENTS)
@@ -36,11 +36,16 @@ run: build ## Build and launch
 clean: ## Remove build output
 	rm -rf build
 
-install: build ## Copy to ~/Applications
+install: build ## Copy to /Applications
+	rm -rf "/Applications/$(NAME).app" && cp -R "$(APP)" /Applications/
+
+install-user: build ## Copy to ~/Applications
 	mkdir -p ~/Applications && rm -rf "$$HOME/Applications/$(NAME).app" && cp -R "$(APP)" ~/Applications/
 
-uninstall: ## Remove the installed app and all its leftovers
-	"$$HOME/Applications/$(NAME).app/Contents/Resources/uninstall.sh"
+uninstall: ## Remove the installed app (from /Applications or ~/Applications) and all its leftovers
+	@for d in /Applications "$$HOME/Applications"; do \
+		if [ -d "$$d/$(NAME).app" ]; then "$$d/$(NAME).app/Contents/Resources/uninstall.sh"; exit; fi; \
+	done; echo "$(NAME).app is not installed"
 
 check: build ## Lint sources, plists, strings and the built bundle
 	swiftc -typecheck $(SRC)
@@ -59,4 +64,4 @@ dmg: build $(DMGBUILD) ## Build a distributable disk image (not notarized)
 	hdiutil verify $(DMG) | tail -1
 
 help: ## List targets
-	@grep -E '^[a-z]+:.*##' Makefile | sed 's/:.*##/ -/'
+	@grep -E '^[a-z-]+:.*##' Makefile | sed 's/:.*##/ -/'
