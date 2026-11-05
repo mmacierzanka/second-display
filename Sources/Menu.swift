@@ -38,12 +38,18 @@ extension App: NSMenuDelegate {
             if menu.items.isEmpty { menu.addItem(header(NSLocalizedString("No devices", comment: ""))) }
             if let d = videoInput?.device {
                 menu.addItem(.separator())
-                menu.addItem(header(NSLocalizedString("Format", comment: "")))
-                var seen = Set<String>()
-                for f in d.formats.sorted(by: { (dims($0).width, fps($0)) > (dims($1).width, fps($1)) }) where seen.insert(label(f)).inserted {
-                    let it = NSMenuItem(title: label(f), action: #selector(pickFormat(_:)), keyEquivalent: "")
-                    it.target = self; it.state = f == d.activeFormat ? .on : .off
-                    menu.addItem(it)
+                for (i, attr) in attributes.enumerated() {
+                    let sub = NSMenu()
+                    let values = Dictionary(d.formats.map { (attr.value($0), attr.order($0)) }, uniquingKeysWith: max)
+                    for v in values.sorted(by: { ($0.value, $0.key) > ($1.value, $1.key) }).map(\.key) {
+                        let it = NSMenuItem(title: v, action: #selector(pickAttribute(_:)), keyEquivalent: "")
+                        it.target = self; it.tag = i; it.representedObject = v
+                        it.state = attr.value(d.activeFormat) == v ? .on : .off
+                        sub.addItem(it)
+                    }
+                    let parent = NSMenuItem(title: attr.title, action: nil, keyEquivalent: "")
+                    parent.submenu = sub
+                    menu.addItem(parent)
                 }
             }
         } else if menu === audioMenu {
@@ -92,9 +98,13 @@ extension App: NSMenuDelegate {
     @objc func pickAudio(_ s: NSMenuItem) { setAudio(s.representedObject as? AVCaptureDevice) }
     @objc func toggleQuitOnDisconnect() { defaults.set(!quitOnDisconnect, forKey: "quitOnDisconnect") }
     @objc func toggleFull() { defaults.set(!startFull, forKey: "startFull") }
-    @objc func pickFormat(_ s: NSMenuItem) {
-        guard let d = videoInput?.device else { return }
-        defaults.set(s.title, forKey: "format.\(d.uniqueID)"); applyFormat(d)
+    @objc func pickAttribute(_ s: NSMenuItem) {
+        guard let d = videoInput?.device, let v = s.representedObject as? String else { return }
+        let want = attributes.map { $0.value(d.activeFormat) }
+        // Keep the other two attributes where the device supports the combination, else match as many as possible.
+        func score(_ f: AVCaptureDevice.Format) -> Int { attributes.indices.filter { $0 == s.tag ? false : attributes[$0].value(f) == want[$0] }.count }
+        guard let best = d.formats.filter({ attributes[s.tag].value($0) == v }).max(by: { score($0) < score($1) }) else { return }
+        defaults.set(key(best), forKey: "format.\(d.uniqueID)"); applyFormat(d)
     }
     @objc func toggleTop() { defaults.set(!onTop, forKey: "onTop"); window.level = onTop ? .floating : .normal }
     @objc func toggleMute() { muted.toggle(); preview.volume = muted ? 0 : 1 }

@@ -6,7 +6,9 @@
 "Off" = "Wyłączony";
 "Prevent display sleep" = "Nie usypiaj ekranu";
 "Start in full screen" = "Uruchamiaj na pełnym ekranie";
-"Format" = "Format";
+"Resolution" = "Rozdzielczość";
+"Frame rate" = "Liczba klatek";
+"Pixel format" = "Format pikseli";
 "Always on top" = "Zawsze na wierzchu";
 "Mute" = "Wycisz";
 "Scaling" = "Skalowanie";
