@@ -11,7 +11,11 @@ extension App {
         }
         nc.addObserver(forName: AVCaptureDevice.wasDisconnectedNotification, object: nil, queue: .main) { n in
             guard let d = n.object as? AVCaptureDevice else { return }
-            if d.uniqueID == self.videoInput?.device.uniqueID { self.swap(&self.videoInput, to: nil) }
+            if d.uniqueID == self.videoInput?.device.uniqueID {
+                // the autostart agent keeps waiting and relaunches the app when the device returns
+                if self.quitOnDisconnect { return NSApp.terminate(nil) }
+                self.swap(&self.videoInput, to: nil)
+            }
             if d.uniqueID == self.audioInput?.device.uniqueID { self.swap(&self.audioInput, to: nil) }
         }
     }

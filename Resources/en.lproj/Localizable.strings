@@ -26,3 +26,4 @@
 "Camera access denied" = "Camera access denied";
 "Allow camera access for Second Display in System Settings > Privacy & Security > Camera, then launch it again." = "Allow camera access for Second Display in System Settings > Privacy & Security > Camera, then launch it again.";
 "Microphone access denied. Enable it in System Settings." = "Microphone access denied. Enable it in System Settings.";
+"Quit when device is disconnected" = "Quit when device is disconnected";

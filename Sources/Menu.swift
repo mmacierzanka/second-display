@@ -71,11 +71,13 @@ extension App: NSMenuDelegate {
             k.target = self; k.state = keepAwake ? .on : .off
             let f = NSMenuItem(title: NSLocalizedString("Start in full screen", comment: ""), action: #selector(toggleFull), keyEquivalent: "")
             f.target = self; f.state = startFull ? .on : .off
+            let q = NSMenuItem(title: NSLocalizedString("Quit when device is disconnected", comment: ""), action: #selector(toggleQuitOnDisconnect), keyEquivalent: "")
+            q.target = self; q.state = quitOnDisconnect ? .on : .off
             let t = NSMenuItem(title: NSLocalizedString("Always on top", comment: ""), action: #selector(toggleTop), keyEquivalent: "")
             t.target = self; t.state = onTop ? .on : .off
             let m = NSMenuItem(title: NSLocalizedString("Mute", comment: ""), action: #selector(toggleMute), keyEquivalent: "M")
             m.target = self; m.state = muted ? .on : .off
-            menu.addItem(k); menu.addItem(f); menu.addItem(t); menu.addItem(m)
+            menu.addItem(k); menu.addItem(f); menu.addItem(q); menu.addItem(t); menu.addItem(m)
             menu.addItem(.separator())
             menu.addItem(header(NSLocalizedString("Scaling", comment: "")))
             for (key, name) in [("fit", "Fit"), ("fill", "Fill"), ("stretch", "Stretch")] {
@@ -88,6 +90,7 @@ extension App: NSMenuDelegate {
     func header(_ s: String) -> NSMenuItem { let i = NSMenuItem(title: s, action: nil, keyEquivalent: ""); i.isEnabled = false; return i }
     @objc func pickVideo(_ s: NSMenuItem) { setVideo(s.representedObject as? AVCaptureDevice) }
     @objc func pickAudio(_ s: NSMenuItem) { setAudio(s.representedObject as? AVCaptureDevice) }
+    @objc func toggleQuitOnDisconnect() { defaults.set(!quitOnDisconnect, forKey: "quitOnDisconnect") }
     @objc func toggleFull() { defaults.set(!startFull, forKey: "startFull") }
     @objc func pickFormat(_ s: NSMenuItem) {
         guard let d = videoInput?.device else { return }
