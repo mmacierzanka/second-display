@@ -19,6 +19,9 @@ extension App: NSMenuDelegate {
         let fs = NSMenuItem(title: L("Enter Full Screen"), action: #selector(NSWindow.toggleFullScreen(_:)), keyEquivalent: "f")
         fs.keyEquivalentModifierMask = [.command, .control]
         windowMenu.addItem(fs)
+        let pip = NSMenuItem(title: L("Picture in Picture"), action: #selector(togglePip(_:)), keyEquivalent: "p")
+        pip.keyEquivalentModifierMask = [.command, .option]; pip.target = self
+        windowMenu.addItem(pip)
         windowMenu.addItem(.separator())
         windowMenu.addItem(NSMenuItem(title: L("Bring All to Front"), action: #selector(NSApplication.arrangeInFront(_:)), keyEquivalent: ""))
         NSApp.windowsMenu = windowMenu  // AppKit adds the system tiling ("Move & Resize") items
@@ -106,7 +109,7 @@ extension App: NSMenuDelegate {
         guard let best = d.formats.filter({ attributes[s.tag].value($0) == v }).max(by: { score($0) < score($1) }) else { return }
         defaults.set(key(best), forKey: "format.\(d.uniqueID)"); applyFormat(d)
     }
-    @objc func toggleTop() { defaults.set(!onTop, forKey: "onTop"); window.level = onTop ? .floating : .normal }
+    @objc func toggleTop() { defaults.set(!onTop, forKey: "onTop"); window.level = onTop || pipFrame != nil ? .floating : .normal }
     @objc func toggleMute() { muted.toggle(); preview.volume = muted ? 0 : 1 }
     @objc func pickGravity(_ s: NSMenuItem) { defaults.set(s.representedObject as? String, forKey: "gravity"); layer.videoGravity = gravity }
     @objc func toggleAwake() { setKeepAwake(!keepAwake) }

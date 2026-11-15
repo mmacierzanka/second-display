@@ -14,6 +14,7 @@ final class App: NSObject, NSApplicationDelegate {
     var keepAwake = false
     var layer: AVCaptureVideoPreviewLayer!
     var muted = false
+    var pipFrame: NSRect?  // window frame to restore; non-nil while in picture in picture
     let defaults = UserDefaults.standard
 
     func applicationDidFinishLaunching(_ n: Notification) {
