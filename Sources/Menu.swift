@@ -30,7 +30,8 @@ extension App: NSMenuDelegate {
         if menu === videoMenu {
             menu.removeAllItems()
             for d in videoDevices() {
-                let it = NSMenuItem(title: d.localizedName, action: #selector(pickVideo(_:)), keyEquivalent: "")
+                // no action = greyed out: a suspended camera (e.g. the built-in one with the lid closed) has no picture
+                let it = NSMenuItem(title: d.localizedName, action: d.isSuspended ? nil : #selector(pickVideo(_:)), keyEquivalent: "")
                 it.target = self; it.representedObject = d
                 it.state = d.uniqueID == videoInput?.device.uniqueID ? .on : .off
                 menu.addItem(it)
