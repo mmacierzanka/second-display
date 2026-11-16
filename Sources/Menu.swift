@@ -97,7 +97,7 @@ extension App: NSMenuDelegate {
             }
             menu.addItem(.separator())
             menu.addItem(header(NSLocalizedString("PiP mode", comment: "")))
-            for (system, name) in [(false, "App window"), (true, "System")] {
+            for (system, name) in [(false, "App window"), (true, "System (experimental)")] {
                 let it = NSMenuItem(title: NSLocalizedString(name, comment: ""), action: #selector(pickPipMode(_:)), keyEquivalent: "")
                 it.target = self; it.representedObject = system; it.state = pipSystem == system ? .on : .off
                 menu.addItem(it)

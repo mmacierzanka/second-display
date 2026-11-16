@@ -22,10 +22,10 @@
 "Picture in Picture" = "Picture in Picture";
 "PiP mode" = "PiP mode";
 "App window" = "App window";
-"System" = "System";
-"Use system Picture in Picture?" = "Use system Picture in Picture?";
-"It relies on a workaround for a macOS bug, so the picture may appear cropped after a macOS update. If that happens, switch back to App window." = "It relies on a workaround for a macOS bug, so the picture may appear cropped after a macOS update. If that happens, switch back to “App window”.";
-"Use System Mode" = "Use System Mode";
+"System (experimental)" = "System (experimental)";
+"Turn on experimental system Picture in Picture?" = "Turn on experimental system Picture in Picture?";
+"This mode shows the video in the macOS Picture in Picture window through a workaround for a system bug, so it may behave unpredictably: the picture may be cropped or fail to appear, especially after a macOS update. It also uses a little more CPU and memory, even while picture in picture is off. If something goes wrong, switch back to App window." = "This mode shows the video in the macOS Picture in Picture window through a workaround for a system bug, so it may behave unpredictably: the picture may be cropped or fail to appear, especially after a macOS update. It also uses a little more CPU and memory, even while picture in picture is off. If something goes wrong, switch back to “App window”.";
+"Turn On" = "Turn On";
 "Cancel" = "Cancel";
 "Bring All to Front" = "Bring All to Front";
 "No capture devices found" = "No capture devices found";
