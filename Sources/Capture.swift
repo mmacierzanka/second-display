@@ -53,7 +53,7 @@ extension App {
 
     func restore() {
         if videoInput == nil {
-            let devices = videoDevices()
+            let devices = videoDevices().filter { !$0.isSuspended }
             let preferred = [autostartID, defaults.string(forKey: "video")].compactMap { id in devices.first { $0.uniqueID == id } }
             if let d = preferred.first ?? devices.first { setVideo(d) }
         }
