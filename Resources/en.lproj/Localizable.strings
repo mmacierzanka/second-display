@@ -20,6 +20,13 @@
 "Zoom" = "Zoom";
 "Enter Full Screen" = "Enter Full Screen";
 "Picture in Picture" = "Picture in Picture";
+"PiP mode" = "PiP mode";
+"App window" = "App window";
+"System" = "System";
+"Use system Picture in Picture?" = "Use system Picture in Picture?";
+"It relies on a workaround for a macOS bug, so the picture may appear cropped after a macOS update. If that happens, switch back to App window." = "It relies on a workaround for a macOS bug, so the picture may appear cropped after a macOS update. If that happens, switch back to “App window”.";
+"Use System Mode" = "Use System Mode";
+"Cancel" = "Cancel";
 "Bring All to Front" = "Bring All to Front";
 "No capture devices found" = "No capture devices found";
 "Connect a camera or capture card and launch Second Display again." = "Connect a camera or capture card and launch Second Display again.";

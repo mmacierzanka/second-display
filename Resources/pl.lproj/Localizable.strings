@@ -20,6 +20,13 @@
 "Zoom" = "Powiększ";
 "Enter Full Screen" = "Wejdź w tryb pełnoekranowy";
 "Picture in Picture" = "Obraz w obrazie";
+"PiP mode" = "Tryb PiP";
+"App window" = "Okno aplikacji";
+"System" = "Systemowy";
+"Use system Picture in Picture?" = "Użyć systemowego obrazu w obrazie?";
+"It relies on a workaround for a macOS bug, so the picture may appear cropped after a macOS update. If that happens, switch back to App window." = "Ten tryb korzysta z obejścia błędu macOS, więc po aktualizacji systemu obraz może być przycięty. Wróć wtedy do trybu „Okno aplikacji”.";
+"Use System Mode" = "Użyj trybu systemowego";
+"Cancel" = "Anuluj";
 "Bring All to Front" = "Przenieś wszystko na wierzch";
 "No capture devices found" = "Nie znaleziono urządzeń przechwytujących";
 "Connect a camera or capture card and launch Second Display again." = "Podłącz kamerę lub urządzenie przechwytujące i uruchom Second Display ponownie.";

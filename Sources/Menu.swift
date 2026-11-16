@@ -94,6 +94,13 @@ extension App: NSMenuDelegate {
                 it.target = self; it.representedObject = key; it.state = (defaults.string(forKey: "gravity") ?? "fit") == key ? .on : .off
                 menu.addItem(it)
             }
+            menu.addItem(.separator())
+            menu.addItem(header(NSLocalizedString("PiP mode", comment: "")))
+            for (system, name) in [(false, "App window"), (true, "System")] {
+                let it = NSMenuItem(title: NSLocalizedString(name, comment: ""), action: #selector(pickPipMode(_:)), keyEquivalent: "")
+                it.target = self; it.representedObject = system; it.state = pipSystem == system ? .on : .off
+                menu.addItem(it)
+            }
         }
     }
     func header(_ s: String) -> NSMenuItem { let i = NSMenuItem(title: s, action: nil, keyEquivalent: ""); i.isEnabled = false; return i }
