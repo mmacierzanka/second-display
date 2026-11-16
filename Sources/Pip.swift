@@ -17,7 +17,8 @@ extension App: AVCaptureVideoDataOutputSampleBufferDelegate, AVPictureInPictureC
             return window.toggleFullScreen(nil)
         }
         if pipFrame != nil || !pipSystem { toggleWindowPip() }
-        else if let pip, pip.isPictureInPicturePossible { pip.startPictureInPicture() }
+        // without a first frame (e.g. a suspended camera) AVKit lays the PiP window out with NaN and crashes
+        else if let pip, pip.isPictureInPicturePossible, pipLayer.isReadyForDisplay { pip.startPictureInPicture() }
         else { NSSound.beep() }
     }
 
