@@ -52,6 +52,8 @@ extension App {
     }
 
     func restore() {
+        // run first: on macOS startRunning puts the preset's format back over one set before it
+        if !session.isRunning { session.startRunning() }
         if videoInput == nil {
             let devices = videoDevices().filter { !$0.isSuspended }
             let preferred = [autostartID, defaults.string(forKey: "video")].compactMap { id in devices.first { $0.uniqueID == id } }
@@ -60,7 +62,6 @@ extension App {
         if audioInput == nil, !micBlocked, let id = defaults.string(forKey: "audio"), let d = audioDevices().first(where: { $0.uniqueID == id }) {
             setAudio(d)
         }  // default: audio off until chosen
-        if !session.isRunning { session.startRunning() }
     }
 
     func swap(_ old: inout AVCaptureDeviceInput?, to device: AVCaptureDevice?) {
