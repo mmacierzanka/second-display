@@ -24,7 +24,7 @@
 "App window" = "App window";
 "System (experimental)" = "System (experimental)";
 "Turn on experimental system Picture in Picture?" = "Turn on experimental system Picture in Picture?";
-"This mode shows the video in the macOS Picture in Picture window through a workaround for a system bug, so it may behave unpredictably: the picture may be cropped or fail to appear, especially after a macOS update. It also uses a little more CPU and memory, even while picture in picture is off. If something goes wrong, switch back to App window." = "This mode shows the video in the macOS Picture in Picture window through a workaround for a system bug, so it may behave unpredictably: the picture may be cropped or fail to appear, especially after a macOS update. It also uses a little more CPU and memory, even while picture in picture is off. If something goes wrong, switch back to “App window”.";
+"This mode may not work correctly and uses more resources." = "This mode may not work correctly and uses more resources.";
 "Turn On" = "Turn On";
 "Cancel" = "Cancel";
 "Bring All to Front" = "Bring All to Front";

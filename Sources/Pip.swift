@@ -28,7 +28,7 @@ extension App: AVCaptureVideoDataOutputSampleBufferDelegate, AVPictureInPictureC
             let alert = NSAlert()
             alert.alertStyle = .warning
             alert.messageText = NSLocalizedString("Turn on experimental system Picture in Picture?", comment: "")
-            alert.informativeText = NSLocalizedString("This mode shows the video in the macOS Picture in Picture window through a workaround for a system bug, so it may behave unpredictably: the picture may be cropped or fail to appear, especially after a macOS update. It also uses a little more CPU and memory, even while picture in picture is off. If something goes wrong, switch back to App window.", comment: "")
+            alert.informativeText = NSLocalizedString("This mode may not work correctly and uses more resources.", comment: "")
             alert.addButton(withTitle: NSLocalizedString("Turn On", comment: ""))
             alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
             guard alert.runModal() == .alertFirstButtonReturn else { return }

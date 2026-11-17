@@ -24,7 +24,7 @@
 "App window" = "Okno aplikacji";
 "System (experimental)" = "Systemowy (eksperymentalny)";
 "Turn on experimental system Picture in Picture?" = "Włączyć eksperymentalny systemowy obraz w obrazie?";
-"This mode shows the video in the macOS Picture in Picture window through a workaround for a system bug, so it may behave unpredictably: the picture may be cropped or fail to appear, especially after a macOS update. It also uses a little more CPU and memory, even while picture in picture is off. If something goes wrong, switch back to App window." = "Ten tryb pokazuje wideo w systemowym oknie obrazu w obrazie dzięki obejściu błędu macOS, więc może działać nieprzewidywalnie: obraz może być przycięty albo się nie pojawić, zwłaszcza po aktualizacji systemu. Zużywa też nieco więcej procesora i pamięci, nawet gdy obraz w obrazie jest wyłączony. Jeśli coś pójdzie nie tak, wróć do trybu „Okno aplikacji”.";
+"This mode may not work correctly and uses more resources." = "Ten tryb może działać z błędami i zużywa więcej zasobów.";
 "Turn On" = "Włącz";
 "Cancel" = "Anuluj";
 "Bring All to Front" = "Przenieś wszystko na wierzch";
