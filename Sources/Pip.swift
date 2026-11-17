@@ -37,9 +37,12 @@ extension App: AVCaptureVideoDataOutputSampleBufferDelegate, AVPictureInPictureC
         defaults.set(system, forKey: "pipSystem"); applyPipMode()
     }
 
-    /// The app-window PiP takes the picture's shape when it opens, so after a format or source change it opens again.
-    /// (System PiP follows the new frames by itself.)
-    func reshapePip() { if pipFrame != nil { toggleWindowPip(); toggleWindowPip() } }
+    /// After a format or source change: the app-window PiP opens again in the picture's new shape;
+    /// system PiP goes wrong when the frames change size, so it is turned off.
+    func reshapePip() {
+        if pipFrame != nil { toggleWindowPip(); toggleWindowPip() }
+        if let pip, pip.isPictureInPictureActive { pip.stopPictureInPicture() }
+    }
 
     private func setPipChecked(_ on: Bool) { windowMenu.items.first { $0.action == #selector(togglePip(_:)) }?.state = on ? .on : .off }
 
