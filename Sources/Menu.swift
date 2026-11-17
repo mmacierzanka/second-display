@@ -105,7 +105,7 @@ extension App: NSMenuDelegate {
         }
     }
     func header(_ s: String) -> NSMenuItem { let i = NSMenuItem(title: s, action: nil, keyEquivalent: ""); i.isEnabled = false; return i }
-    @objc func pickVideo(_ s: NSMenuItem) { setVideo(s.representedObject as? AVCaptureDevice) }
+    @objc func pickVideo(_ s: NSMenuItem) { setVideo(s.representedObject as? AVCaptureDevice); reshapePip() }
     @objc func pickAudio(_ s: NSMenuItem) { setAudio(s.representedObject as? AVCaptureDevice) }
     @objc func toggleQuitOnDisconnect() { defaults.set(!quitOnDisconnect, forKey: "quitOnDisconnect") }
     @objc func toggleFull() { defaults.set(!startFull, forKey: "startFull") }
@@ -115,7 +115,7 @@ extension App: NSMenuDelegate {
         // Keep the other two attributes where the device supports the combination, else match as many as possible.
         func score(_ f: AVCaptureDevice.Format) -> Int { attributes.indices.filter { $0 == s.tag ? false : attributes[$0].value(f) == want[$0] }.count }
         guard let best = d.formats.filter({ attributes[s.tag].value($0) == v }).max(by: { score($0) < score($1) }) else { return }
-        defaults.set(key(best), forKey: "format.\(d.uniqueID)"); applyFormat(d)
+        defaults.set(key(best), forKey: "format.\(d.uniqueID)"); applyFormat(d); reshapePip()
     }
     @objc func toggleTop() { defaults.set(!onTop, forKey: "onTop"); window.level = onTop || pipFrame != nil ? .floating : .normal }
     @objc func toggleMute() { muted.toggle(); preview.volume = muted ? 0 : 1 }
