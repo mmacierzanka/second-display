@@ -81,6 +81,7 @@ extension App: AVCaptureVideoDataOutputSampleBufferDelegate, AVPictureInPictureC
         pipLayer.videoGravity = .resizeAspect
         pipLayer.frame = CGRect(x: 0, y: 0, width: 640, height: 360)  // resized to the PiP window once it opens
         window.contentView!.layer!.insertSublayer(pipLayer, below: layer)
+        layer.backgroundColor = NSColor.black.cgColor  // opaque, or "fit" shows pipLayer through the letterbox
         pipRenderer = pipLayer.sampleBufferRenderer
         // shortcut: in system mode frames are delivered all the time, not only while PiP is on; gate the output if CPU use matters
         videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "pip"))
