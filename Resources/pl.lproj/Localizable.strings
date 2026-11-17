@@ -23,8 +23,8 @@
 "PiP mode" = "Tryb PiP";
 "App window" = "Okno aplikacji";
 "System (experimental)" = "Systemowy (eksperymentalny)";
-"Turn on experimental system Picture in Picture?" = "Włączyć eksperymentalny systemowy obraz w obrazie?";
-"This mode may not work correctly and uses more resources." = "Ten tryb może działać z błędami i zużywa więcej zasobów.";
+"System Picture in Picture" = "Systemowy obraz w obrazie";
+"This feature is experimental and may behave unpredictably. Resource usage may increase. Do you want to continue?" = "Ta funkcja jest eksperymentalna i może zachowywać się w sposób nieprzewidywalny. Zużycie zasobów może wzrosnąć. Czy chcesz kontynuować?";
 "Turn On" = "Włącz";
 "Cancel" = "Anuluj";
 "Bring All to Front" = "Przenieś wszystko na wierzch";

@@ -23,8 +23,8 @@
 "PiP mode" = "PiP mode";
 "App window" = "App window";
 "System (experimental)" = "System (experimental)";
-"Turn on experimental system Picture in Picture?" = "Turn on experimental system Picture in Picture?";
-"This mode may not work correctly and uses more resources." = "This mode may not work correctly and uses more resources.";
+"System Picture in Picture" = "System Picture in Picture";
+"This feature is experimental and may behave unpredictably. Resource usage may increase. Do you want to continue?" = "This feature is experimental and may behave unpredictably. Resource usage may increase. Do you want to continue?";
 "Turn On" = "Turn On";
 "Cancel" = "Cancel";
 "Bring All to Front" = "Bring All to Front";

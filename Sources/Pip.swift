@@ -27,8 +27,8 @@ extension App: AVCaptureVideoDataOutputSampleBufferDelegate, AVPictureInPictureC
         if system {
             let alert = NSAlert()
             alert.alertStyle = .warning
-            alert.messageText = NSLocalizedString("Turn on experimental system Picture in Picture?", comment: "")
-            alert.informativeText = NSLocalizedString("This mode may not work correctly and uses more resources.", comment: "")
+            alert.messageText = NSLocalizedString("System Picture in Picture", comment: "")
+            alert.informativeText = NSLocalizedString("This feature is experimental and may behave unpredictably. Resource usage may increase. Do you want to continue?", comment: "")
             alert.addButton(withTitle: NSLocalizedString("Turn On", comment: ""))
             alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
             guard alert.runModal() == .alertFirstButtonReturn else { return }
