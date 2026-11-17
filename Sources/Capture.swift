@@ -100,9 +100,12 @@ extension App {
 
     func applyFormat(_ d: AVCaptureDevice) {
         guard let l = defaults.string(forKey: "format.\(d.uniqueID)"),
-              let f = d.formats.first(where: { key($0) == l }), (try? d.lockForConfiguration()) != nil else { return }
+              let f = d.formats.first(where: { key($0) == l }),
+              let r = f.videoSupportedFrameRateRanges.max(by: { $0.maxFrameRate < $1.maxFrameRate }),
+              (try? d.lockForConfiguration()) != nil else { return }
         d.activeFormat = f
-        d.activeVideoMinFrameDuration = CMTime(value: 1, timescale: CMTimeScale(fps(f)))
+        // the device's own duration: a rounded 1/fps can fall outside a range like 60.00024–60.00024 and throw
+        d.activeVideoMinFrameDuration = r.minFrameDuration
         d.activeVideoMaxFrameDuration = d.activeVideoMinFrameDuration
         d.unlockForConfiguration()
     }

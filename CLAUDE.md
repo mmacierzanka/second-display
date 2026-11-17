@@ -23,6 +23,6 @@ A native macOS app that shows video from a capture device (camera / capture card
 ## Conventions
 - Settings live in `UserDefaults` (keys: `video`, `audio`, `autostart`, `autostartName`, `keepAwake`, `startFull`, `quitOnDisconnect`, `onTop`, `pipSystem`, `gravity`, `format.<id>`).
 - Add new strings through `NSLocalizedString` and to both `Localizable.strings` files.
-- Run `make check` before committing. Version is in `Config/Info.plist`; build number = commit count.
+- Run `make check` before committing. Version is in `Config/Info.plist`; build number = commit count. Releases (versioning, bump PR, tag, DMG, release notes) follow `.claude/skills/release/SKILL.md`.
 - Work on a feature branch (`feature/<topic>`, `fix/<topic>`) and open a PR with `gh pr create`; do not commit straight to `main`.
 - Commits follow [Conventional Commits](https://www.conventionalcommits.org), in English: `feat:`, `fix:`, `docs:`, `refactor:`, `build:`, `chore:` (optional scope, e.g. `feat(menu):`), imperative subject under ~72 chars. Small, one per change, with a `Co-Authored-By` line.
