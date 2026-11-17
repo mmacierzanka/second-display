@@ -19,6 +19,9 @@ extension App: NSMenuDelegate {
         let fs = NSMenuItem(title: L("Enter Full Screen"), action: #selector(NSWindow.toggleFullScreen(_:)), keyEquivalent: "f")
         fs.keyEquivalentModifierMask = [.command, .control]
         windowMenu.addItem(fs)
+        let pip = NSMenuItem(title: L("Picture in Picture"), action: #selector(togglePip(_:)), keyEquivalent: "p")
+        pip.keyEquivalentModifierMask = [.command, .option]; pip.target = self
+        windowMenu.addItem(pip)
         windowMenu.addItem(.separator())
         windowMenu.addItem(NSMenuItem(title: L("Bring All to Front"), action: #selector(NSApplication.arrangeInFront(_:)), keyEquivalent: ""))
         NSApp.windowsMenu = windowMenu  // AppKit adds the system tiling ("Move & Resize") items
@@ -92,10 +95,17 @@ extension App: NSMenuDelegate {
                 it.target = self; it.representedObject = key; it.state = (defaults.string(forKey: "gravity") ?? "fit") == key ? .on : .off
                 menu.addItem(it)
             }
+            menu.addItem(.separator())
+            menu.addItem(header(NSLocalizedString("PiP mode", comment: "")))
+            for (system, name) in [(false, "App window"), (true, "System (experimental)")] {
+                let it = NSMenuItem(title: NSLocalizedString(name, comment: ""), action: #selector(pickPipMode(_:)), keyEquivalent: "")
+                it.target = self; it.representedObject = system; it.state = pipSystem == system ? .on : .off
+                menu.addItem(it)
+            }
         }
     }
     func header(_ s: String) -> NSMenuItem { let i = NSMenuItem(title: s, action: nil, keyEquivalent: ""); i.isEnabled = false; return i }
-    @objc func pickVideo(_ s: NSMenuItem) { setVideo(s.representedObject as? AVCaptureDevice) }
+    @objc func pickVideo(_ s: NSMenuItem) { setVideo(s.representedObject as? AVCaptureDevice); reshapePip() }
     @objc func pickAudio(_ s: NSMenuItem) { setAudio(s.representedObject as? AVCaptureDevice) }
     @objc func toggleQuitOnDisconnect() { defaults.set(!quitOnDisconnect, forKey: "quitOnDisconnect") }
     @objc func toggleFull() { defaults.set(!startFull, forKey: "startFull") }
@@ -105,9 +115,9 @@ extension App: NSMenuDelegate {
         // Keep the other two attributes where the device supports the combination, else match as many as possible.
         func score(_ f: AVCaptureDevice.Format) -> Int { attributes.indices.filter { $0 == s.tag ? false : attributes[$0].value(f) == want[$0] }.count }
         guard let best = d.formats.filter({ attributes[s.tag].value($0) == v }).max(by: { score($0) < score($1) }) else { return }
-        defaults.set(key(best), forKey: "format.\(d.uniqueID)"); applyFormat(d)
+        defaults.set(key(best), forKey: "format.\(d.uniqueID)"); applyFormat(d); reshapePip()
     }
-    @objc func toggleTop() { defaults.set(!onTop, forKey: "onTop"); window.level = onTop ? .floating : .normal }
+    @objc func toggleTop() { defaults.set(!onTop, forKey: "onTop"); window.level = onTop || pipFrame != nil ? .floating : .normal }
     @objc func toggleMute() { muted.toggle(); preview.volume = muted ? 0 : 1 }
     @objc func pickGravity(_ s: NSMenuItem) { defaults.set(s.representedObject as? String, forKey: "gravity"); layer.videoGravity = gravity }
     @objc func toggleAwake() { setKeepAwake(!keepAwake) }

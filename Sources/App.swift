@@ -1,5 +1,6 @@
 import AppKit
 import AVFoundation
+import AVKit
 import IOKit.pwr_mgt
 
 final class App: NSObject, NSApplicationDelegate {
@@ -14,6 +15,11 @@ final class App: NSObject, NSApplicationDelegate {
     var keepAwake = false
     var layer: AVCaptureVideoPreviewLayer!
     var muted = false
+    var pipFrame: NSRect?  // window frame to restore; non-nil while in app-window picture in picture
+    let pipLayer = AVSampleBufferDisplayLayer()
+    nonisolated(unsafe) var pipRenderer: AVSampleBufferVideoRenderer?  // pipLayer's renderer, fed from the capture queue
+    let videoOutput = AVCaptureVideoDataOutput()
+    var pip: AVPictureInPictureController?
     let defaults = UserDefaults.standard
 
     func applicationDidFinishLaunching(_ n: Notification) {
@@ -41,6 +47,7 @@ final class App: NSObject, NSApplicationDelegate {
         layer.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
         window.contentView!.layer!.addSublayer(layer)
         window.contentView!.layer!.backgroundColor = NSColor.black.cgColor
+        applyPipMode()
         window.center()
         hideCursorWhenIdle()
         window.makeKeyAndOrderFront(nil)
@@ -64,5 +71,6 @@ final class App: NSObject, NSApplicationDelegate {
         }
     }
 
-    func applicationShouldTerminateAfterLastWindowClosed(_ a: NSApplication) -> Bool { true }
+    // system PiP orders the main window out; that must not count as closing the last window
+    func applicationShouldTerminateAfterLastWindowClosed(_ a: NSApplication) -> Bool { pip?.isPictureInPictureActive != true }
 }

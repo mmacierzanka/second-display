@@ -19,6 +19,14 @@
 "Minimize" = "Minimize";
 "Zoom" = "Zoom";
 "Enter Full Screen" = "Enter Full Screen";
+"Picture in Picture" = "Picture in Picture";
+"PiP mode" = "PiP mode";
+"App window" = "App window";
+"System (experimental)" = "System (experimental)";
+"System Picture in Picture" = "System Picture in Picture";
+"This feature is experimental and may behave unpredictably. Resource usage may increase. Do you want to continue?" = "This feature is experimental and may behave unpredictably. Resource usage may increase. Do you want to continue?";
+"Turn On" = "Turn On";
+"Cancel" = "Cancel";
 "Bring All to Front" = "Bring All to Front";
 "No capture devices found" = "No capture devices found";
 "Connect a camera or capture card and launch Second Display again." = "Connect a camera or capture card and launch Second Display again.";
